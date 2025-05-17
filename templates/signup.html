@@ -2,33 +2,137 @@
 <head>
 	<link href="https://fonts.googleapis.com/css?family=Bungee&display=swap" rel="stylesheet" />
 	<link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet" />
-	<link rel="stylesheet" href="{{ url_for('static', filename='landing_page.css') }}">	<title>Document</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}">	<title>Document</title>
 </head>
 <body>
 	<div id="navbar">
-		<button class="nav-item">Home</button>
-		<button class="nav-item">Journal</button>
-		<button class="nav-item">Chatbot</button>
-		<button class="nav-item">Emotion Analysis</button>
+		<span class="nav-item">Home</span>
+		<span class="nav-item">Journal</span>
+		<span class="nav-item">Chatbot</span>
+		<span class="nav-item">Emotion Analysis</span>
 	</div>
 
 	<div id="center-container">
-        <span class="subtitle">Welcome to</span>
+        <span id="welcome">Welcome to</span>
 		<span id="title">Bloopi!</span>
-		<span class="subtitle">subtitle subtitle subtitle subtitle subtitle</span>
 		
-        <span id="username">Sign In</button>
-        <input type="text" id="username-input" placeholder="Username" />
-        <span id="password">Password</button>
-        <input type="password" id="password-input" placeholder="Password" />
-        <hr style="width:50%;text-align:left;margin-left:0">
+        <label id="username">Username</label>
+        <input type="text" id="username-input" placeholder="Username" >
+        <label id="password">Password</label>
+        <input type="password" id="password-input" placeholder="Password" >
+        
+        <button id="signup">Sign Up</button>
 
+        <span id="error">testtest</span>
+
+        <hr style="width: 80%; margin: 0 auto;">
         <button id="google">idk google wooo</button>
 
 
 
 
 	</div>
+
+    <script>
+        document.getElementById("signup").onclick = async function() {
+            error = document.getElementById('error');
+            const username = document.getElementById('username-input').value.toString();
+            const password = document.getElementById('password-input').value.toString();
+            if (username === "" || password === "") {
+                let error = document.getElementById('error');
+                error.style.display = "block";
+                error.textContent = "Please fill in all fields.";
+                return;
+            }
+
+            if (validatePassword(password) !== "") {
+                let error = document.getElementById('error');
+                error.style.display = "block";
+                error.textContent = validatePassword(password);
+                return;
+            }
+            const usernameValid = await validateUsername(username);
+
+            if (!usernameValid) {
+                return;
+            }
+        
+        
+            error = document.getElementById('error');
+            let formData = new FormData();
+            formData.append('username', username);
+            formData.append('password', password);
+                
+            fetch('/signup', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            }).then(data => {
+                if (data.hasOwnProperty('error')) {
+                    error = document.getElementById('error');
+                    error.textContent = data.error;
+                    error.style.display = "block";
+
+                } else {
+                    window.location.href = "{{ url_for('home_page') }}";
+                }
+            })
+            .catch(error => {
+                error.textContent = "error"; 
+                error.style.display = "block";
+            });
+        };
+
+        function validatePassword(password) {
+            if (typeof password !== 'string') {
+                return "Password must be a string.";
+            }
+            if (password.length < 8) {
+                return "Password must be at least 8 characters long.";
+            }
+            if (!/[A-Z]/.test(password)) {
+                return "Password must contain at least one uppercase letter.";
+            }
+            if (!/[a-z]/.test(password)) {
+                return "Password must contain at least one lowercase letter.";
+            }
+            if (!/[0-9]/.test(password)) {
+                return "Password must contain at least one digit.";
+            }
+            return ""; 
+        }
+
+        async function validateUsername(username) {
+            error = document.getElementById('error');
+            let formData = new FormData();
+            formData.append('username', username);
+            const response = await fetch('/user_exists', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || data.hasOwnProperty('error')) {
+                error.style.display = "block";
+                error.textContent = data.error || "Unknown error checking username.";
+                return false;
+            }
+
+            return true;
+            
+        }
+
+
+        document.getElementById("google").onclick = function() {
+            window.location.href = "{{ url_for('signup_w_google') }}";
+        };
+
+    </script>
 
 	
 

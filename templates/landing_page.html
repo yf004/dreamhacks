@@ -5,12 +5,6 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='landing_page.css') }}">	<title>Document</title>
 </head>
 <body>
-	<div id="navbar">
-		<button class="nav-item">Home</button>
-		<button class="nav-item">Journal</button>
-		<button class="nav-item">Chatbot</button>
-		<button class="nav-item">Emotion Analysis</button>
-	</div>
 
 	<div id="center-container">
 		<span id="title">Bloopi</span>
@@ -21,6 +15,14 @@
 
 	
 
-	
+	<script>
+		document.getElementById("signin").onclick = function() {
+			window.location.href = "{{ url_for('signin_page') }}";
+		};
+
+		document.getElementById("signup").onclick = function() {
+			window.location.href = "{{ url_for('signup_page') }}";
+		};
+	</script>
 </body>
 </html>

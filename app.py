@@ -4,6 +4,8 @@ from flask import Flask, redirect, url_for, session, render_template, request, j
 from authlib.integrations.flask_client import OAuth
 import os
 from config import *
+import firebase_admin
+from firebase_admin import credentials, auth, firestore
 
 
 app = Flask(__name__)
@@ -25,16 +27,27 @@ google = oauth.register(
 
 )
 
+
+# Initialize Firebase Admin SDK
+cred = credentials.Certificate('serviceAccountKey.json')
+firebase_admin.initialize_app(cred)
+db = firestore.client()
+
 @app.route("/")
 def home(): #bruhhhhhhhhhhhhhhhhh i was so confused pls oml
     return render_template("landing_page.html")
 
-@app.route("/signup")
-def signup():
+@app.route("/signup_page")
+def signup_page():
+    if 'is_logged_in' in session and session['is_logged_in']:
+        return redirect('/home_page')
     return render_template("signup.html")
 
-@app.route("/signin")
-def signin():
+@app.route("/signin_page")
+def signin_page():
+    if 'is_logged_in' in session and session['is_logged_in']:
+        return redirect('/home_page')
+
     return render_template("signin.html")
 
 @app.route("/home_page")
@@ -52,12 +65,62 @@ def auth_callback():
     resp = google.get('userinfo')
     user_info = resp.json()
     session['email'] = user_info['email']
-    return redirect('/')
+    session['is_logged_in'] = True
+    return redirect('/signup_page')
+
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    username = request.form.get('username')
+    password = request.form.get('password ')
+
+    username_ref = db.collection('usernames').document(username)
+
+    try:
+        user = auth.create_user(uid=username, password=password)
+
+
+        username_ref.set({
+            'uid': user.uid,
+            'username': username
+        })
+
+        session['is_logged_in'] = True
+        session['username'] = username
+
+        return jsonify({'message': 'User created successfully', 'uid': user.uid}), 201
+
+    except Exception as e:
+        print(f"Error creating user: {e}")
+        return jsonify({'error': str(e)}), 400
+    
+@app.route('/signin', methods=['POST'])
+def signin():
+    
+    return jsonify({'error': 'meow'}), 400
+    
+@app.route('/user_exists', methods=['POST'])
+def user_exists():
+    username = request.form.get('username')
+
+
+    username_ref = db.collection('usernames').document(username)
+
+    if username_ref.get().exists:
+        return jsonify({'error': 'Username already taken'}), 400
+    else:
+        return jsonify({'message': 'Username available'}), 200
+
 
 @app.route('/logout')
 def logout():
-    session.pop('username', None)
-    return redirect(url_for('home'))
+    session['is_logged_in'] = False
+    if 'username' in session:
+        session.pop('username', None)  
+    if 'email' in session:
+        session.pop('email', None)
+    return redirect('/')
+
 
 if __name__ == "__main__":
     app.run(use_reloader=True, debug=True) # for auto-reloading cos yay

@@ -38,7 +38,15 @@
                 <button id="next-month">Next &gt;</button>
             </div>
         </div>
+
+        <button id="logout">logout</button>
     </div>
     <script src="../static/calendar.js"></script>
+    <script>
+        document.getElementById("logout").onclick = function() {
+            window.location.href = "{{ url_for('logout') }}";
+        };
+
+    </script>
 </body>
 </html>

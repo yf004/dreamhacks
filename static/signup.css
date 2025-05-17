@@ -1,22 +1,19 @@
 :root {
-  --primary-color: #4E443A;
+  --primary-color: #A38172;
   --dark-primary-color: #544947;
+  --light-primary-color: #F8E9DA;
   --transparent-white: rgba(255, 255, 255, 0.45);
-
   --transparent-dark-primary-color: rgba(84, 73, 71, 0.55);
 
   --temp: #EECDBD
 }
 
 body {
-  font-size: 14px;
   margin: 0;
   padding: 0;
   font-family: 'Roboto Mono', monospace;
   display: flex;
   flex-direction: column;
-  background-color: var(--temp);
-
   background-image: url('/static/images/background.png');
   background-size: cover;         /* 🚨 THIS makes it fill and crop */
   background-position: center;    /* center it in the viewport */
@@ -26,36 +23,35 @@ body {
 }
 .nav-item{
   border-radius: 10px;
-  border: 2px solid var(--transparent-dark-primary-color);
   padding: 10px 20px;
-  background-color: var(--transparent-white);
-  color: var(--dark-primary-color);
+  color: var(--light-primary-color);
   display: flex; 
   justify-content: center; 
   align-items: center;
+  font-family: "Bungee", sans-serif;
 }
+
 #navbar {
-  padding: 10px;
+  padding: 2.1vh 2vw;
   display: flex;
   gap: 20px;
   flex-direction: row;
-  margin-left: 6%;
-  margin-top: 2vh;
+  background-color: var(--dark-primary-color);
+  padding-left: 5vw;
 }
 
 #title {
-  font-size: 150px;
+  font-size: 380%;
   color: var(--dark-primary-color);
   font-family: "Bungee", sans-serif;
   background-color: transparent;
 
 }
 
-.subtitle {
-  font-size: 18px;
+#welcome {
+  font-size: 90%;
   color: var(--dark-primary-color);
   background-color: transparent;
-  margin-top: 0px;
 }
 
 #center-container {
@@ -63,7 +59,84 @@ body {
     align-items: center; /* Center items vertically */
     justify-content: center; /* Center items horizontally */
     align-self: center;
-    margin-top: 8vh;
+    margin-top: 4vh;
     flex-direction: column;
     text-align: center;
+    background-color: var(--transparent-white);
+    border-radius: 10px;
+    padding: 5vh 5vw;
+    color: var(--dark-primary-color);
 }
+
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;        
+    font-size: 12px;
+    padding: 10px 20px;
+    margin: 10px;
+    font-family: "Bungee", sans-serif;
+    font-weight: 300;
+    align-self: center;
+}
+button:hover {
+    background-color: transparent;
+    border: 3px solid var(--primary-color);
+    color: var(--primary-color);
+    align-self: center;
+}
+
+input{
+    background-color: var(--transparent-white);
+    border-radius: 10px;
+    font-size: 14px;
+    padding: 10px 20px;
+    font-family: "Bungee", sans-serif;
+    font-weight: 300;
+    border: 3px solid var(--primary-color);
+    display: block;
+    align-self: center;
+    width: 20.5vw;
+    margin-top: 6px;
+    color: var(--primary-color);
+
+    
+}
+
+input:focus {
+    outline: none;
+}
+
+input::placeholder {
+    color: var(--transparent-dark-primary-color);
+}
+
+#signup{
+    width: 25vw;
+    display: block;
+    margin: 10px 20px;
+}
+
+label{
+    align-self: flex-start;
+    margin-left: 3vw;
+    margin-top: 10px;
+    font-size: 90%;
+}
+
+
+#error{
+    color: var(--primary-color);
+    font-size: 60%;
+    align-self: center;
+    width: 100%;
+    display: none;
+    width: 22vw;
+    text-align: left;
+    margin-bottom: 1.5vh;
+
+}
+
+

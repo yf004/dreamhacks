@@ -1,6 +1,8 @@
 :root {
-  --primary-color: #4E443A;
+  --primary-color: #A38172;
   --dark-primary-color: #544947;
+  --light-primary-color: #F8E9DA;
+
   --transparent-white: rgba(255, 255, 255, 0.45);
 
   --transparent-dark-primary-color: rgba(84, 73, 71, 0.55);
@@ -9,7 +11,6 @@
 }
 
 body {
-  font-size: 14px;
   margin: 0;
   padding: 0;
   font-family: 'Roboto Mono', monospace;
@@ -24,35 +25,16 @@ body {
   height: 100vh;                  /* full viewport height */
   width: 100vw;  
 }
-.nav-item{
-  border-radius: 10px;
-  border: 2px solid var(--transparent-dark-primary-color);
-  padding: 10px 20px;
-  background-color: var(--transparent-white);
-  color: var(--dark-primary-color);
-  display: flex; 
-  justify-content: center; 
-  align-items: center;
-}
-#navbar {
-  padding: 10px;
-  display: flex;
-  gap: 20px;
-  flex-direction: row;
-  margin-left: 6%;
-  margin-top: 2vh;
-}
 
 #title {
-  font-size: 150px;
+  font-size: 750%;
   color: var(--dark-primary-color);
   font-family: "Bungee", sans-serif;
   background-color: transparent;
-
 }
 
 #subtitle {
-  font-size: 18px;
+  font-size: 100%;
   color: var(--dark-primary-color);
   background-color: transparent;
   margin-top: 0px;
@@ -63,31 +45,31 @@ body {
     align-items: center; /* Center items vertically */
     justify-content: center; /* Center items horizontally */
     align-self: center;
-    margin-top: 8vh;
+    margin-top: 20vh;
     flex-direction: column;
     text-align: center;
 }
 
-#signin{
-  border-radius: 8px;
-  border: 2px solid var(--transparent-dark-primary-color);
-  padding: 12px 70px;
-  background-color: var(--transparent-white);
-  color: var(--dark-primary-color);
-  justify-content: center; 
-  align-items: center;
-  margin-top: 5vh;
-  font-weight: bold;
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;        
+    font-size: 12px;
+    padding: 10px 20px;
+    margin: 2vh;
+    font-family: "Bungee", sans-serif;
+    font-weight: 300;
+    width: 20vw
+}
+button:hover {
+    background-color: transparent;
+    border: 3px solid var(--primary-color);
+    color: var(--primary-color);
 }
 
-#signup{
-  border-radius: 8px;
-  border: 2px solid var(--transparent-dark-primary-color);
-  padding: 12px 70px;
-  background-color: var(--transparent-white);
-  color: var(--dark-primary-color);
-  justify-content: center; 
-  align-items: center;
-  margin-top: 2vh;
-  font-weight: bold;
+#signin{
+  margin-top: 5vh;
+ 
 }
