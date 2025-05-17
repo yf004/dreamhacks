@@ -1,84 +1,40 @@
-# empty for now :(
 
+# Chatbot.py
 '''
-
-deepseek api
-
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=API_KEY
-    )
-    completion = client.chat.completions.create(
-        extra_body={},
-        model="deepseek/deepseek-r1:free",
-        messages=[
-            {
-                "role": "user",
-                "content": f"Rate this quip on a scale of 1-10: {user_input}, for the question: {question}, return a number from 1-10, inclusive, based on how funny, quirky and original the response was."
-            }
-        ]
-    )
-    ans = completion.choices[0].message.content
+class TherapyChatbot:
+    def chat(self, message: str, mode="talk") -> str:
+        if mode == "talk":
+            prompt = f"You are a supportive, gentle listener. Respond to: {message}"
+        else:
+            prompt = f"You are a problem-solving therapist. Help the user with: {message}"
+        return call_llm(prompt)
 
 
+prompt = "Based on recent journal entries, suggest a helpful journaling prompt for emotional clarity."
+# PromptGenerator.py
+class PromptGenerator:
+    def generate(self, recent_entries: List[str]) -> str:
+        return "What is something that made you feel safe recently?"
 
 
+# CopingStrategyGenerator.py
+class CopingStrategyGenerator:
+    def suggest(self, emotions: Dict[str, float]) -> List[str]:
+        if emotions["sadness"] > 0.5:
+            return ["Take a short walk", "Talk to a friend", "Do a 5-minute breathing exercise"]
+
+
+prompt = "You are a therapy assistant. Analyze the user's journal entry and summarize recurring thoughts, concerns, or behaviors. Offer 1 reflection."
+class JournalTherapist:
+    def generate_insight(self, entry: str) -> str:
+        return "You seem to be consistently stressed about school deadlines."
+
+class EmotionAnalyzer:
+    def analyze(self, text: str) -> Dict[str, float]:
+        return {"joy": 0.2, "sadness": 0.6, "anger": 0.1, "calm": 0.1}
     
 
-words
-
-import nltk
-from nltk.corpus import words
-nltk.download('words', quiet=True)
 
 
 
-
-
-firestore
-
-app = Flask(__name__)
-cred = credentials.Certificate("firebase-key.json")
-firebase_admin.initialize_app(cred)
-db = firestore.client()
-
-
-# load allowed names
-names_docs = db.collection("allowedNames").get()
-allowedNames = []
-
-for doc in names_docs:
-    allowedNames = doc.to_dict().get('names')
-
-
-import firebase_admin
-from firebase_admin import credentials, firestore
-from google.cloud.firestore_v1.base_query import FieldFilter
-
-cred = credentials.Certificate("firebase-key.json")
-firebase_admin.initialize_app(cred)
-
-db = firestore.client()
-
-nameList = db.collection("allowedNames").document('allowedNames')
-nameList.set({
-    "names": lis
-})
-
-for name in lis:
-    user_ref = db.collection("onlineUsers").document(name)
-    user_ref.set({
-        "username": name,
-        "online": False,
-        "lastSeen": firestore.SERVER_TIMESTAMP
-    })
-
-names_docs = db.collection("allowedNames").get()
-names_list = []
-
-for doc in names_docs:
-    names_list = doc.to_dict().get('names')
-
-print(names_list)
 '''
-
