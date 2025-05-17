@@ -8,6 +8,10 @@ app = Flask(__name__)
 def home():
     return render_template("index.html")
 
+@app.route("/main")
+def main():
+    return render_template("landing_page.html")
+
 if __name__ == "__main__":
     app.run(use_reloader=True, debug=True) # for auto-reloading cos yay
 

@@ -1,0 +1,93 @@
+:root {
+  --primary-color: #4E443A;
+  --dark-primary-color: #544947;
+  --transparent-white: rgba(255, 255, 255, 0.45);
+
+  --transparent-dark-primary-color: rgba(84, 73, 71, 0.55);
+
+  --temp: #EECDBD
+}
+
+body {
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--temp);
+}
+.nav-item{
+  border-radius: 15px;
+  border: 2px solid var(--transparent-dark-primary-color);
+  padding: 10px 20px;
+  background-color: var(--transparent-white);
+  color: var(--dark-primary-color);
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+}
+#navbar {
+  padding: 10px;
+  display: flex;
+  gap: 20px;
+  flex-direction: row;
+  margin-left: 6%;
+}
+
+#title {
+  font-size: 90px;
+  color: var(--dark-primary-color);
+  font-family: bun;
+  font-family: "Bungee", sans-serif;
+
+  /* Desktop - 1 */
+
+position: relative;
+width: 1440px;
+height: 1024px;
+
+background: url(memphis-patterned-background-earth-tone-design.jpg);
+
+
+}
+
+#subtitle {
+  font-size: 20px;
+  color: var(--dark-primary-color);
+}
+
+#center-container {
+    display: flex; /* Use flexbox */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    flex-direction: column; /* Stack children vertically */
+    align-self: center;
+    text-align: center;
+    margin-top: 18vh;
+}
+
+#signin{
+  border-radius: 15px;
+  border: 2px solid var(--transparent-dark-primary-color);
+  padding: 10px 20px;
+  background-color: var(--transparent-white);
+  color: var(--dark-primary-color);
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  margin-top: 5vh;
+}
+
+#signup{
+  border-radius: 15px;
+  border: 2px solid var(--transparent-dark-primary-color);
+  padding: 10px 20px;
+  background-color: var(--transparent-white);
+  color: var(--dark-primary-color);
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  margin-top: 2vh;
+
+}
