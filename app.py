@@ -5,7 +5,7 @@ from utils import *
 app = Flask(__name__)
 
 @app.route("/")
-def home():
+def home(): #bruhhhhhhhhhhhhhhhhh i was so confused pls oml
     return render_template("index.html")
 
 @app.route("/main")
@@ -20,8 +20,9 @@ def signup():
 def signin():
     return render_template("signin.html")
 
-
-
+@app.route("/home_page")
+def home_page():
+    return render_template("home_page.html")
 
 if __name__ == "__main__":
     app.run(use_reloader=True, debug=True) # for auto-reloading cos yay

@@ -1,0 +1,107 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto Mono', monospace;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.background {
+  background-image: url('/static/images/background.png');
+  background-size: cover;         
+  background-position: center; 
+  background-repeat: no-repeat;  
+  height: 100vh;                  
+  width: 100vw; 
+}
+
+.content-box {
+  width: 98%;
+  height: 70%;
+  background: rgba(233,230,220,0.7);
+  position: absolute;
+  top: 250px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 3px solid rgba(78,68,57,1);
+}
+
+.app-title {
+  color: rgba(78,68,57,1);
+  position: absolute;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: Bungee;
+  font-size: 100px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.calendar-header {
+  color: rgba(78,68,57,1);
+  position: absolute;
+  top: 270px;
+  left: 75px;
+  font-size: 30px;
+  text-align: left;
+}
+
+.navbar {
+  display: flex;
+  gap: 40px;
+  position: absolute;
+  top: 36px;
+  left: 50px;
+}
+
+.nav-item {
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 2px solid rgba(78, 68, 57, 1);
+  border-radius: 5px;
+  font-size: 20px;
+  color: rgba(78, 68, 57, 1);
+  text-align: center;
+}
+
+.calendar-container {
+  position: absolute;
+  width: 90%;
+  top: 320px; /* Increased top padding */
+  bottom: 30px; /* Added bottom padding */
+  left: 5%;
+  right: 5%;
+  height: calc(100% - 370px); /* Calculate height based on container */
+}
+
+.calendar {
+  border-collapse: collapse;
+  width: 100%;
+  height: calc(100% - 30px); /* Make calendar fill the container */
+  table-layout: fixed;
+  font-size: 20px;
+}
+
+.calendar th, .calendar td {
+  border: 2px solid rgba(78,68,57,1);
+  background-color: rgba(233,230,220,0.7);
+  width: 14.28%;
+  padding: 15px 10px;
+  text-align: center;
+}
+
+.calendar th {
+  vertical-align: middle;
+  font-weight: normal;
+  height: 10%; /* Fixed header height */
+}
+
+.calendar td {
+  height: 18%; /* Each cell takes equal height of remaining space */
+  vertical-align: top;
+}

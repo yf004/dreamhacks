@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Bungee&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='home_page.css') }}">
+    <title>Bloopi - Calendar</title>
+</head>
+<body>
+    <div class="background">
+        <div class="content-box"></div>
+        <span class="app-title">--- ---   Bloopi   --- --- </span>
+        <span class="calendar-header"><b>Month</b> Year</span>
+        <div class="navbar">
+            <span class="nav-item">Home</span>
+            <span class="nav-item">Journal</span>
+            <span class="nav-item">Chatbot</span>
+            <span class="nav-item">Emotion Analysis</span>
+        </div>
+        <div class="calendar-container">
+            <table class="calendar">
+                <tr>
+                    <th>Sunday</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+                </tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
