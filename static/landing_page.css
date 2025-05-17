@@ -16,6 +16,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: var(--temp);
+  
 }
 .nav-item{
   border-radius: 15px;
@@ -38,33 +39,25 @@ body {
 #title {
   font-size: 90px;
   color: var(--dark-primary-color);
-  font-family: bun;
   font-family: "Bungee", sans-serif;
-
-  /* Desktop - 1 */
-
-position: relative;
-width: 1440px;
-height: 1024px;
-
-background: url(memphis-patterned-background-earth-tone-design.jpg);
-
+  background-color: transparent;
 
 }
 
 #subtitle {
   font-size: 20px;
   color: var(--dark-primary-color);
+  background-color: transparent;
 }
 
 #center-container {
     display: flex; /* Use flexbox */
     align-items: center; /* Center items vertically */
     justify-content: center; /* Center items horizontally */
-    flex-direction: column; /* Stack children vertically */
     align-self: center;
     text-align: center;
     margin-top: 18vh;
+    flex-direction: column;
 }
 
 #signin{
@@ -73,7 +66,6 @@ background: url(memphis-patterned-background-earth-tone-design.jpg);
   padding: 10px 20px;
   background-color: var(--transparent-white);
   color: var(--dark-primary-color);
-  display: flex; 
   justify-content: center; 
   align-items: center;
   margin-top: 5vh;
@@ -85,7 +77,6 @@ background: url(memphis-patterned-background-earth-tone-design.jpg);
   padding: 10px 20px;
   background-color: var(--transparent-white);
   color: var(--dark-primary-color);
-  display: flex; 
   justify-content: center; 
   align-items: center;
   margin-top: 2vh;
