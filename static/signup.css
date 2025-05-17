@@ -51,7 +51,7 @@ body {
 
 }
 
-#subtitle {
+.subtitle {
   font-size: 18px;
   color: var(--dark-primary-color);
   background-color: transparent;
@@ -66,28 +66,4 @@ body {
     margin-top: 8vh;
     flex-direction: column;
     text-align: center;
-}
-
-#signin{
-  border-radius: 8px;
-  border: 2px solid var(--transparent-dark-primary-color);
-  padding: 12px 70px;
-  background-color: var(--transparent-white);
-  color: var(--dark-primary-color);
-  justify-content: center; 
-  align-items: center;
-  margin-top: 5vh;
-  font-weight: bold;
-}
-
-#signup{
-  border-radius: 8px;
-  border: 2px solid var(--transparent-dark-primary-color);
-  padding: 12px 70px;
-  background-color: var(--transparent-white);
-  color: var(--dark-primary-color);
-  justify-content: center; 
-  align-items: center;
-  margin-top: 2vh;
-  font-weight: bold;
 }

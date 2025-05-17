@@ -12,6 +12,17 @@ def home():
 def main():
     return render_template("landing_page.html")
 
+@app.route("/signup")
+def signup():
+    return render_template("signup.html")
+
+@app.route("/signin")
+def signin():
+    return render_template("signin.html")
+
+
+
+
 if __name__ == "__main__":
     app.run(use_reloader=True, debug=True) # for auto-reloading cos yay
 
