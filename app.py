@@ -9,6 +9,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from typing import List, Dict
 from util.utils import *
+from datetime import datetime
 
 
 
@@ -35,6 +36,8 @@ google = oauth.register(
 cred = credentials.Certificate('serviceAccountKey.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
+
+chatbot = None
 
 @app.route("/")
 def index(): #bruhhhhhhhhhhhhhhhhh i was so confused pls oml
@@ -164,6 +167,7 @@ def home():
 
 @app.route('/chat')
 def chat():
+    chatbot = TherapyChatbot()
     if 'is_logged_in' in session and session['is_logged_in']:
         return render_template('chat.html')
     return redirect('/signin_page')
@@ -223,6 +227,21 @@ def get_ai_analysis():
             }
         }, merge=True)
     return jsonify({'response': ai_response}), 200
+
+
+@app.route('/get_chatbot_response', methods=['POST'])
+def get_chatbot_response():
+    message = request.form.get('message')
+    mode = request.form.get('mode')
+    response = chatbot.chat(message, mode)
+    
+    return jsonify({'response': response}), 200
+
+@app.route('/get_chatbot_summary', methods=['GET'])
+def get_chatbot_summary():
+    response = chatbot.chatbot.summarize_session()
+    save_chat(response)
+    return jsonify({'response': response}), 200
 
 @app.route('/journal_entry', methods=['POST', 'GET'])  
 def journal_entry():
@@ -288,8 +307,6 @@ def retrieve_ai_response(username, day, month):
     
     return ''  
 
-from datetime import datetime
-
 def retrieve_latest_entries():
     try:
         if 'email' in session:
@@ -316,8 +333,8 @@ def retrieve_latest_entries():
             sorted_keys = sorted(entries.keys(), key=parse_date, reverse=True)
 
             latest_entries = []
-            for key in sorted_keys[:10]:  # Get up to 10 latest
-                entry = entries.get(key, {}).get('entry', '')
+            for key in sorted_keys[:10]: 
+                entry = entries.get(key, {}).get('summary', '')
                 if entry:
                     latest_entries.append(entry)
 
@@ -393,6 +410,54 @@ def save_entry():
                 'journal_entries': {
                     key: {
                         'entry': entry,
+                        'summary': summary
+                    }
+                }
+            }, merge=True)
+
+    except Exception as e:
+        print(f"Error saving entry: {e}")
+    return jsonify({'message': 'Entry saved successfully'}), 200
+
+def save_chat(summary:str):
+    """Save a journal entry for a specific user, day, and month."""
+    try:
+        day = request.form.get('day')
+        month = request.form.get('month')
+        entry = request.form.get('entry')
+
+        summary = get_journal_summary(entry)
+        if 'email' in session:
+            username = session['email']
+        elif 'username' in session:
+            username = session['username']
+        else: return
+
+        key = f"{day}-{month}"
+
+        doc_ref = db.collection('usernames').document(username)
+        doc = doc_ref.get()
+
+        chat = chatbot.save_entire_history()
+        id = chat.get('id')
+        time = chat.get('time')
+        history = chat.get('history')
+        if not doc.exists:
+            doc_ref.set({
+                'chats': {
+                    time: {
+                        'id': id,
+                        'history': history,
+                        'summary': summary
+                    }
+                }
+            })
+        else:
+            doc_ref.set({
+                'chats': {
+                    time: {
+                        'id': id,
+                        'history': history,
                         'summary': summary
                     }
                 }
