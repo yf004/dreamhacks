@@ -197,8 +197,13 @@ def journal_entry():
     else:
         username = session['username']
 
-    day = request.form.get('day')
-    month = request.form.get('month')
+    if request.method == 'POST':
+        day = request.form.get('day')
+        month = request.form.get('month')
+    else:  # GET method
+        day = request.args.get('day')
+        month = request.args.get('month')
+
     print(username)
     print(day, month)
     entry = retrieve_entry(username, day, month)
@@ -206,29 +211,57 @@ def journal_entry():
     return render_template("journal_entry.html", entry = entry, day = day, month=month)
 
 def retrieve_entry(username, day, month):
-    doc_ref = db.collection('usernames').document(username)
-    doc = doc_ref.get()
-    if doc.exists:
-        data = doc.to_dict()
-        if data.get('day') == day and data.get('month') == month:
-            
-            return data.get('entry')
-    return ''
+    try:
+        doc_ref = db.collection('usernames').document(username)
+        doc = doc_ref.get()
 
-@app.route('/save_entry', methods=['POST'])
+        if doc.exists:
+            data = doc.to_dict()
+
+            # Create a unique key like '10-May' for lookup
+            entries = data.get('journal_entries', {})
+            key = f"{day}-{month}"
+            return entries.get(key, '') 
+
+    except Exception as e:
+        print(f"Error retrieving entry: {e}")
+        return '' 
+    
+    return ''  
+
+@app.route('/save_entry', methods=['POST']) 
 def save_entry():
-    username = session['username']
-    entry = request.form.get('entry')
-    day = str(request.form.get('day'))
-    month = request.form.get('month')
+    """Save a journal entry for a specific user, day, and month."""
+    try:
+        day = request.form.get('day')
+        month = request.form.get('month')
+        entry = request.form.get('entry')
+        if 'email' in session:
+            username = session['email']
+        else:
+            username = session['username']
 
-    doc_ref = db.collection('usernames').document(username)
-    data = {
-        'day': day,
-        'month': month,
-        'entry': entry
-    }
-    return
+        key = f"{day}-{month}"
+
+        doc_ref = db.collection('usernames').document(username)
+        doc = doc_ref.get()
+        if not doc.exists:
+            doc_ref.set({
+                'journal_entries': {
+                    key: entry
+                }
+            })
+        else:
+            doc_ref.set({
+                'journal_entries': {
+                    key: entry
+                }
+            }, merge=True)
+
+    except Exception as e:
+        print(f"Error saving entry: {e}")
+    return 'done'
+
 
 if __name__ == "__main__":
     app.run(use_reloader=True, debug=True) # for auto-reloading cos yay

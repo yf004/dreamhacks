@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     dateNumber.textContent = prevMonthDay;
 
                     let prevMonth = month - 1 < 0 ? 11 : month - 1;
-                    dateNumber.addEventListener('click', () => {
+                    dateNumber.addEventListener('click', async function() {
                         let formData = new FormData();
                         formData.append('day', prevMonthDay);
                         formData.append('month', monthNames[prevMonth]);
@@ -87,14 +87,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         dateNumber.classList.add('current-date');
                     }
 
-                    dateNumber.addEventListener('click', () => {
+                    dateNumber.addEventListener('click', async function() {
                         let formData = new FormData();
-                        formData.append('day', date);
+                        formData.append('day', dateNumber.textContent);
                         formData.append('month', monthNames[month]);
                             
                         fetch('/journal_entry', {
                             method: 'POST',
                             body: formData
+                        }).then(response => {
+                            // After successful fetch, redirect to the journal entry page with query parameters
+                            window.location.href = `/journal_entry?day=${dateNumber.textContent}&month=${monthNames[month]}`;
                         })
                         .catch(error => {
                             console.log(error);

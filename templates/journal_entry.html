@@ -12,7 +12,10 @@
     
 
 	<div id="center-container">
-        <button id="back">Back</button>
+        <button id="back">
+            <img src="{{ url_for('static', filename='images/back.png') }}" alt="Google" style="width: 20px; height: 20px; margin-left: 5px;">
+            Back
+        </button>
         <div id="top-bar">
             <div class="daymonth">
                 <span id="day"></span>
@@ -51,6 +54,13 @@
     <script>
         document.getElementById("day").textContent = '{{ day }}';
         document.getElementById("month").textContent = '{{ month }}';
+
+        const entry = '{{ entry }}'
+
+        if (entry !== ''){
+            document.getElementById("journal-input").value = entry;
+
+        }
 
         document.getElementById("close").onclick = function() {
             document.getElementById("prompt").style.display = "none";
@@ -92,7 +102,7 @@
 
         document.getElementById('save').onclick = async function(){
             const entry = document.getElementById('journal-input').value.toString();
-            const date = new Date();
+            
 
             let formData = new FormData();
             const monthNames = [
@@ -101,8 +111,8 @@
             ];
 
             formData.append('entry', entry);
-            formData.append('day', date.getDate());
-            formData.append('month', monthNames[date.getMonth()]);
+            formData.append('day', '{{ day }}');
+            formData.append('month', '{{ month }}');
                 
             fetch('/save_entry', {
                 method: 'POST',
@@ -114,15 +124,6 @@
         }
 
 
-
-
-
-    
-
-<<<<<<< HEAD
-    </script>
-
-=======
          /* Finish button */
         document.getElementById("finish").onclick = function() {
             // Show separator and analysis container
@@ -144,7 +145,6 @@
         }
         
     </script>
->>>>>>> 45d6b2fb7c82d4f225f6a40a62d54be4da829eb3
 
 	
 </body>
