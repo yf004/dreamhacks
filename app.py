@@ -78,11 +78,7 @@ def auth_callback():
 
     return redirect(curr_url)
 
-@app.route('/journal_entry')  
-def journal_entry():
-    if 'is_logged_in' in session and session['is_logged_in']:
-        return render_template("journal_entry.html")
-    return render_template("signin.html")
+
 
 @app.route('/get_prompt', methods=['POST'])  
 def get_prompt():
@@ -156,7 +152,6 @@ def user_exists():
     else:
         return jsonify({'message': 'Username available'}), 200
 
-
 @app.route('/logout')
 def logout():
     session['is_logged_in'] = False
@@ -194,8 +189,46 @@ def get_data():
         return jsonify({"name": user})
     else:
         redirect('/signin_page')
-    
 
+@app.route('/journal_entry', methods=['POST', 'GET'])  
+def journal_entry():
+    if 'email' in session:
+        username = session['email']
+    else:
+        username = session['username']
+
+    day = request.form.get('day')
+    month = request.form.get('month')
+    print(username)
+    print(day, month)
+    entry = retrieve_entry(username, day, month)
+    print('entry', entry)
+    return render_template("journal_entry.html", entry = entry, day = day, month=month)
+
+def retrieve_entry(username, day, month):
+    doc_ref = db.collection('usernames').document(username)
+    doc = doc_ref.get()
+    if doc.exists:
+        data = doc.to_dict()
+        if data.get('day') == day and data.get('month') == month:
+            
+            return data.get('entry')
+    return ''
+
+@app.route('/save_entry', methods=['POST'])
+def save_entry():
+    username = session['username']
+    entry = request.form.get('entry')
+    day = str(request.form.get('day'))
+    month = request.form.get('month')
+
+    doc_ref = db.collection('usernames').document(username)
+    data = {
+        'day': day,
+        'month': month,
+        'entry': entry
+    }
+    return
 
 if __name__ == "__main__":
     app.run(use_reloader=True, debug=True) # for auto-reloading cos yay

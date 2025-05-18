@@ -358,3 +358,7 @@ button:hover {
 .font-size-selector:hover {
 	background-color: rgba(233,230,220,1);
 }
+
+#back{
+  align-self: flex-start;
+}
