@@ -159,7 +159,7 @@ body {
 .chat-header-right {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-sm);
+	gap: var(--spacing-lg);
 }
 
 .chat-title {
@@ -171,23 +171,22 @@ body {
 
 .new-chat-button {
 	background: var(--button-bg-color);
-	border: 2px solid var(--main-border-color);
-	padding: 0.5rem 1rem;
+	padding: 0.5rem 4rem;
 	border-radius: var(--border-radius-small);
+	border: 2px solid var(--main-border-color);
 	cursor: pointer;
 	font-family: 'Roboto Mono', monospace;
 	font-size: 0.875rem;
-	font-weight: bold;
 	color: white;
 	transition: all 0.3s ease;
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
+	margin-left: 3vw;
 }
 
 .new-chat-button:hover {
 	background: var(--button-hover-bg-color);
-	transform: translateY(-2px);
 }
 
 
@@ -199,7 +198,7 @@ body {
 
 .mode-label {
 	font-family: 'Roboto Mono', monospace;
-	font-size: 16px;
+	font-size: 0.875rem;
 	color: var(--main-text-color);
 	font-weight: bold;
 }
@@ -209,10 +208,10 @@ body {
 	width: 60px;
 	height: 30px;
 	background: var(--button-bg-color);
+	border: 2px solid var(--main-border-color);
 	border-radius: 15px;
 	cursor: pointer;
 	transition: all 0.3s ease;
-	border: 2px solid var(--main-border-color);
 }
 
 .toggle-switch:hover {
@@ -307,7 +306,7 @@ body {
 .back-button {
 	background: var(--button-bg-color);
 	border: none;
-	padding: 0.75rem 1.875rem;
+	padding: 0.75rem 3rem;
 	border-radius: var(--border-radius-small);
 	cursor: pointer;
 	font-family: 'Roboto Mono', monospace;
