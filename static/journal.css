@@ -1,0 +1,182 @@
+* {
+	box-sizing: border-box;
+}
+body {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	font-size: 14px;
+	height: 100vh;
+}
+.background {
+	width: 100%;
+	height: 100%;
+	background: url("../images/v7_145.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.title {
+	color: rgba(78,68,57,1);
+	font-family: Bungee, sans-serif;
+	font-size: 50px;
+	text-align: center;
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	position: absolute;
+	top: 10px;
+	left: 0;
+	right: 0;
+}
+.main-content {
+	width: 98%;
+	height: 89%;
+	background: rgba(233,230,220,0.7);
+	position: relative;
+	border: 3px solid rgba(78,68,57,1);
+	margin-top: 90px;
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+}
+.top-controls {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 15px;
+	flex-wrap: wrap;
+}
+.daymonth {
+	color: rgba(78,68,57,1);
+	font-family: 'Roboto Mono', monospace;
+	font-size: 22px;
+	margin-top: 7px;
+	margin-left: 5px;
+	text-align: left;
+}
+.format-controls {
+	display: flex;
+	gap: 20px;
+}
+.control-btn {
+	color: rgba(78,68,57,1);
+	font-family: 'Roboto Mono', monospace;
+	font-size: 18px;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+.control-btn select {
+	font-family: 'Roboto Mono', monospace;
+	padding: 5px;
+	border: 2px solid rgba(78,68,57,1);
+	background-color: white;
+	color: rgba(78,68,57,1);
+	font-size: 16px;
+}
+.textbox {
+	flex: 1;
+	background: rgba(255,255,255,1);
+	border: 4px solid rgba(78,68,57,1);
+	width: 100%;
+	margin-bottom: 15px;
+	padding: 10px;
+	font-size: 16px;
+	font-family: 'Roboto Mono', monospace;
+	overflow-y: auto;
+	line-height: 1.5;
+}
+/* Fixed list spacing issues */
+.textbox ul, .textbox ol {
+	padding-left: 40px;
+	margin: 20px 0;
+}
+.textbox li {
+	margin-bottom: 5px;
+	display: list-item;
+}
+.textbox ol li {
+	list-style-type: decimal;
+}
+.textbox ul li {
+	list-style-type: disc;
+}
+.bottom-controls {
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+}
+.back-btn {
+	background: rgba(255,255,255,1);
+	border: 3px solid rgba(78,68,57,1);
+	padding: 7px 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+.back-btn:hover {
+	background-color: rgba(233,230,220,1);
+}
+.back {
+	color: rgba(78,68,57,1);
+	font-family: 'Roboto Mono', monospace;
+	font-size: 20px;
+	text-align: center;
+}
+/* Format toolbar improved styles */
+.format-toolbar {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+.format-toolbar button {
+	background: white;
+	border: 2px solid rgba(78,68,57,1);
+	width: 45px;
+	height: 45px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'Roboto Mono', monospace;
+	font-size: 18px;
+	font-weight: bold;
+}
+.format-toolbar button:hover {
+	background-color: rgba(233,230,220,1);
+}
+/* Font family selector */
+.font-selector {
+	min-width: 130px;
+	height: 45px;
+	background: white;
+	border: 2px solid rgba(78,68,57,1);
+	font-family: 'Roboto Mono', monospace;
+	font-size: 16px;
+	padding: 0 10px;
+	cursor: pointer;
+}
+.font-selector:hover {
+	background-color: rgba(233,230,220,1);
+}
+/* Font size selector */
+.font-size-selector {
+	width: 150px;
+	height: 45px;
+	background: white;
+	border: 2px solid rgba(78,68,57,1);
+	font-family: 'Roboto Mono', monospace;
+	font-size: 16px;
+	padding: 0 10px;
+	cursor: pointer;
+}
+.font-size-selector:hover {
+	background-color: rgba(233,230,220,1);
+}
