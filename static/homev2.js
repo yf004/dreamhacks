@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const dayNumber = today.getDate();
         
         // Format: "Monday May 18"
-        dayMonthElement.innerHTML = `${dayName} <b>${monthName} ${dayNumber}</b>`;
+        dayMonthElement.innerHTML = `<b>${dayName}</b> ${monthName} ${dayNumber}`;
     }
     
     // Function to generate the calendar
