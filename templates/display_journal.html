@@ -44,8 +44,19 @@
     </div>
 
     <script>
-        document.getElementById("day").textContent = new Date().getDate();
-        document.getElementById("month").textContent = new Date().toLocaleString('default', { month: 'long' });
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        const day = getUrlParameter('day');
+        const month = getUrlParameter('month');
+        const year = getUrlParameter('year');
+
+        document.getElementById("day").textContent = day;
+        document.getElementById("month").textContent = month;
+        
+        document.getElementById("journal-content").textContent = 
+                `[insert journal content for ${day} ${month} ${year || ''}]`.trim();
         
         // Event listeners for navigation
         document.getElementById("nav-home").addEventListener("click", function() {

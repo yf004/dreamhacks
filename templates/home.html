@@ -102,6 +102,48 @@
         const dayMonthElement = document.querySelector('.day-month');
         const emotionOptions = document.querySelectorAll('.emotion');
         
+        // Function to make calendar dates clickable
+        function makeCalendarDatesClickable() {
+            const dateElements = document.querySelectorAll('.date-number:not(.other-month)');
+            
+            dateElements.forEach(dateElement => {
+                const dateText = dateElement.textContent.trim();
+                if (dateText && !isNaN(dateText)) {
+                    dateElement.style.cursor = 'pointer';
+                    
+                    // Remove any existing click listeners to avoid duplicates
+                    dateElement.onclick = null;
+                    
+                    dateElement.onclick = function() {
+                        // Get the clicked date
+                        const clickedDay = parseInt(dateText);
+                        
+                        // Create the date string for the journal page using the current month/year being displayed
+                        const journalDate = new Date(currentYear, currentMonth, clickedDay);
+                        const day = journalDate.getDate();
+                        const month = journalDate.toLocaleString('default', { month: 'long' });
+                        const year = journalDate.getFullYear();
+                        
+                        // Redirect to journal page with date parameters
+                        window.location.href = `/display_journal?day=${day}&month=${month}&year=${year}`;
+                    };
+                    
+                    // Add hover effects
+                    dateElement.addEventListener('mouseenter', function() {
+                        if (!this.classList.contains('current-date')) {
+                            this.style.backgroundColor = 'rgba(191,126,92,0.3)';
+                        }
+                    });
+                    
+                    dateElement.addEventListener('mouseleave', function() {
+                        if (!this.classList.contains('current-date')) {
+                            this.style.backgroundColor = '#f2f2f2';
+                        }
+                    });
+                }
+            });
+        }
+        
         // Event listeners for navigation
         prevMonthBtn.addEventListener('click', goToPrevMonth);
         nextMonthBtn.addEventListener('click', goToNextMonth);
@@ -262,6 +304,9 @@
                 num.style.width = cellSize;
                 num.style.height = cellSize;
             });
+            
+            // IMPORTANT: Make dates clickable after generating the calendar
+            makeCalendarDatesClickable();
         }
         
         // Navigation functions
