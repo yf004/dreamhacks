@@ -30,12 +30,33 @@
 
         <div id="bottom-bar">
             <button id="back-btn">Back</button>
+            <button id="finish" style="margin-left: auto;">View AI recommendations</button>
         </div>
+        
+        <div class="separator"></div>
+        
+        <div id="analysis-container">
+            <button id="close-analysis" style="display: block;">X</button>
+            <div id="analysis-title">AI Analysis</div>
+            <div id="analysis-text"></div>
+        </div>
+
     </div>
 
     <script>
-        document.getElementById("day").textContent = new Date().getDate();
-        document.getElementById("month").textContent = new Date().toLocaleString('default', { month: 'long' });
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        const day = getUrlParameter('day');
+        const month = getUrlParameter('month');
+        const year = getUrlParameter('year');
+
+        document.getElementById("day").textContent = day;
+        document.getElementById("month").textContent = month;
+        
+        document.getElementById("journal-content").textContent = 
+                `[insert journal content for ${day} ${month} ${year || ''}]`.trim();
         
         // Event listeners for navigation
         document.getElementById("nav-home").addEventListener("click", function() {
@@ -45,6 +66,26 @@
         document.getElementById("back-btn").addEventListener("click", function() {
             window.history.back();
         });
+
+        /* Finish button */
+        document.getElementById("finish").onclick = function() {
+            // Show separator and analysis container
+            document.querySelector('.separator').style.display = 'block';
+            document.getElementById('analysis-container').style.display = 'block';
+            
+            // Scroll to the analysis section
+            setTimeout(() => {
+                document.getElementById('analysis-container').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+            
+            document.getElementById('analysis-text').textContent = "[insert AI analysis]";
+        }
+
+        /*Close analysis*/
+         document.getElementById("close-analysis").onclick = function() {
+            document.getElementById('analysis-container').style.display = 'none';
+            document.querySelector('.separator').style.display = 'none';
+        }
     </script>
 </body>
 </html>
