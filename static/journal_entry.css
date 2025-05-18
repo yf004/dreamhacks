@@ -118,9 +118,10 @@ body::-webkit-scrollbar {
 #bottom-bar {
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 103%;
   justify-content: flex-end;
   margin-top: 2vh;
+  margin-left: -2vw;
 }
 
 button {

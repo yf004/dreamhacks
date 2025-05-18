@@ -118,11 +118,12 @@ body::-webkit-scrollbar {
 
 #bottom-bar {
   display: flex;
-  padding: 4px 5px;
+  padding: 20px 0px;
+
   flex-direction: row;
-  width: 100%;
+  width: 103%;
   justify-content: flex-end;
-  padding-right: 5vw;
+  padding-right: 2vw;
 }
 
 button {
@@ -142,4 +143,57 @@ button:hover {
   background-color: transparent;
   border: 3px solid var(--primary-color);
   color: var(--primary-color);
+}
+
+/* AI things */
+.separator {
+  border-top: 3px dotted var(--dark-primary-color);
+  margin: 30px 0;
+  width: 100%;
+  display: none;
+}
+
+#analysis-container {
+  display: none;
+  background-color: var(--transparent-white);
+  border-radius: 8px;
+  border: 2px solid var(--transparent-dark-primary-color);
+  min-height: 30vh;
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px;
+  box-sizing: border-box;
+  position: relative
+  
+}
+
+#analysis-title {
+  font-family: "Bungee", sans-serif;
+  font-size: 20px;
+  color: var(--dark-primary-color);
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+#analysis-text {
+  color: var(--dark-primary-color);
+  font-family: 'Roboto Mono', monospace;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  text-align: left;
+}
+
+#close-analysis {
+  background-color: transparent;
+  color: var(--dark-primary-color);
+  border: none;
+  font-family: "Bungee", sans-serif;
+  padding: 5px;
+  margin: 0px;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 10;
+  position: absolute; 
+  top: 10px; 
+  right: 15px;
 }
