@@ -1,8 +1,9 @@
-from EmotionAnalyzer import EmotionAnalyzer
-from CopingStrategyGenerator import CopingStrategyGenerator
-from PromptGenerator import PromptGenerator
-from Summarizer import Summarizer
-from TherapyChatbot import TherapyChatbot
+from .CopingStrategyGenerator import CopingStrategyGenerator
+from .PromptGenerator import PromptGenerator
+from .Summarizer import Summarizer
+from .TherapyChatbot import TherapyChatbot
+
+from .EmotionAnalyzer import EmotionAnalyzer
 
 from typing import List, Dict
 
@@ -58,6 +59,5 @@ def get_journal_summary(entry: str) -> str:
     """
     summarizer = Summarizer()
     return summarizer.generate_insight(entry)
-
 
 

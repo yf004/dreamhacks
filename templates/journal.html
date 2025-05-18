@@ -1,35 +1,90 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
 <head>
-    <link href="https://fonts.googleapis.com/css?family=Bungee&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Lora&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Playfair+Display&display=swap" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css?family=Bungee&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='journal.css') }}">
-    <title>Bloopi - Journal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='journal.css') }}">	<title>Document</title>
 </head>
 <body>
-    <div class="background">
-        <div class="title"> --- --- --- --- --- --- --- ---   Bloopi   --- --- --- --- --- --- --- --- </div>
-        
-        <div class="main-content">
-            <div class="top-controls">
-                <div class="daymonth"><b>Day</b> Month</div>
-                <div class="format-controls">
-                    <!-- Format toolbar will be inserted here by JavaScript -->
-                </div>
+	<div id="navbar">
+		<span class="nav-item">Home</span>
+		<span class="nav-item">Journal</span>
+		<span class="nav-item">Chatbot</span>
+		<span class="nav-item">Emotion Analysis</span>
+	</div>
+
+	<div id="center-container">
+        <div id="top-bar">
+            <div class="daymonth">
+                <span id="day"></span>
+                <span id="month"></span>
             </div>
-            
-            <div id="journal-text" class="textbox" contenteditable="true"></div>
-            
-            <div class="bottom-controls">
-                <div class="back-btn" onclick="saveJournal()">
-                    <span class="back">Back</span>
-                </div>
+            <div id="prompt">
+                <button id="close">X</button>
+                <span id="prompt-title">Prompt: </span>
+                <span id="prompt-text">testeste</span>
+
             </div>
+            <div class="format-controls"></div>
         </div>
-    </div>
-    <script src="../static/journal.js"></script>
+
+        
+
+        <div id="journal">
+            <textarea type="text" id="journal-input" placeholder="Write your journal entry here..." ></textarea>
+        </div>
+
+        <div id="bottom-bar">
+            <button id="promptBtn">Get prompt</button>
+            <button id="save">Save</button>
+        </div>
+
+		
+	</div>
+
+    <script>
+        document.getElementById("day").textContent = new Date().getDate();
+        document.getElementById("month").textContent = new Date().toLocaleString('default', { month: 'long' });
+
+        document.getElementById("close").onclick = function() {
+            document.getElementById("prompt").style.display = "none";
+        }
+        document.getElementById("promptBtn").onclick = async function () {
+            const promptContainer = document.getElementById("prompt");
+            const promptText = document.getElementById("prompt-text");
+
+            // Show loading message
+            promptText.textContent = "Loading...";
+            promptContainer.style.display = "flex";
+
+            try {
+                const response = await fetch('/get_prompt', {
+                    method: 'POST',
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok (status ${response.status})`);
+                }
+
+                const data = await response.json();
+
+                if (data.hasOwnProperty('prompt')) {
+                    promptText.textContent = data.prompt;
+                } else {
+                    promptText.textContent = "No prompt received.";
+                    console.warn("Response JSON missing 'prompt':", data);
+                }
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+                promptText.textContent = error;
+            }
+        }
+
+    </script>
+    <script src="{{ url_for('static', filename='journal.js') }}"></script>
+
+	
 </body>
 </html>

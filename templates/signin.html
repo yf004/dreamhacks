@@ -1,0 +1,112 @@
+<!DOCTYPE html><html>
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Bungee&display=swap" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='signin.css') }}">	<title>Document</title>
+</head>
+<body>
+	<div id="navbar">
+		<span class="nav-item">Home</span>
+		<span class="nav-item">Journal</span>
+		<span class="nav-item">Chatbot</span>
+		<span class="nav-item">Emotion Analysis</span>
+	</div>
+
+	<div id="center-container">
+        <span id="welcome">Welcome back!</span>
+        <span id="login">Login</span>
+		
+        <label id="username">Username</label>
+        <input type="text" id="username-input" placeholder="Username" >
+        <label id="password">Password</label>
+        <input type="password" id="password-input" placeholder="Password" >
+        
+        <button id="signin">Login</button>
+
+        <span id="error"></span>
+
+        <hr style="width: 80%; margin: 0 auto;">
+        <button id="google">
+            Sign in With Google
+            <img src="{{ url_for('static', filename='images/google.png') }}" alt="Google" style="width: 20px; height: 20px; margin-left: 5px;">
+        </button>
+
+
+
+
+	</div>
+
+    <script>
+        document.getElementById("signin").onclick = async function() {
+            error = document.getElementById('error');
+            const username = document.getElementById('username-input').value.toString();
+            const password = document.getElementById('password-input').value.toString();
+            if (username === "" || password === "") {
+                let error = document.getElementById('error');
+                error.style.display = "block";
+                error.textContent = "Please fill in all fields.";
+                return;
+            }
+
+            if (validatePassword(password) !== "") {
+                let error = document.getElementById('error');
+                error.style.display = "block";
+                error.textContent = validatePassword(password);
+                return;
+            }
+            const usernameValid = await validateUsername(username);
+
+            if (!usernameValid) {
+                return;
+            }
+        
+        
+            error = document.getElementById('error');
+            let formData = new FormData();
+            formData.append('username', username);
+            formData.append('password', password);
+                
+            fetch('/signin', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            }).then(data => {
+                if (data.hasOwnProperty('error')) {
+                    error = document.getElementById('error');
+                    error.textContent = data.error;
+                    error.style.display = "block";
+
+                } else {
+                    window.location.href = "{{ url_for('home_page') }}";
+                }
+            })
+            .catch(error => {
+                error.textContent = "error"; 
+                error.style.display = "block";
+            });
+        };
+
+
+        document.getElementById("google").onclick = function() {
+            let formData = new FormData();
+            formData.append('curr_url', "signin_page");
+            fetch('/signup_w_google', {
+                method: 'POST',
+                body: formData,
+                keepalive: true // helps send data even if page unloads
+            }).catch(err => {
+                console.error('Failed to send:', err);
+            });
+        };
+
+    </script>
+
+	
+
+	
+</body>
+</html>

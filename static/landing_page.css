@@ -45,9 +45,11 @@ body {
     align-items: center; /* Center items vertically */
     justify-content: center; /* Center items horizontally */
     align-self: center;
-    margin-top: 20vh;
+    margin-top: 15vh;
     flex-direction: column;
     text-align: center;
+    padding: 3vh 5vw;
+    background-color: var(--transparent-white);
 }
 
 button {

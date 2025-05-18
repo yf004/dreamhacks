@@ -1,4 +1,3 @@
-from utils import *
 
 from flask import Flask, redirect, url_for, session, render_template, request, jsonify
 from authlib.integrations.flask_client import OAuth
@@ -6,6 +5,11 @@ import os
 from config import *
 import firebase_admin
 from firebase_admin import credentials, auth, firestore
+from werkzeug.security import check_password_hash, generate_password_hash
+
+from typing import List, Dict
+from util.utils import *
+
 
 
 app = Flask(__name__)
@@ -26,7 +30,6 @@ google = oauth.register(
     server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
 
 )
-
 
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate('serviceAccountKey.json')
@@ -52,10 +55,17 @@ def signin_page():
 
 @app.route("/home_page")
 def home_page():
-    return render_template("home_page.html")
+    if 'is_logged_in' in session and session['is_logged_in']:
+        return render_template("home_page.html")
+    return redirect('/')
 
-@app.route('/signup_w_google')
+
+    
+
+@app.route('/signup_w_google', methods=['POST'])
 def signup_w_google():
+    curr_url = request.form.get('curr_url')
+    session['curr_url'] = curr_url
     redirect_uri = url_for('auth_callback', _external=True)
     return google.authorize_redirect(redirect_uri)
 
@@ -66,7 +76,17 @@ def auth_callback():
     user_info = resp.json()
     session['email'] = user_info['email']
     session['is_logged_in'] = True
-    return redirect('/signup_page')
+
+    return redirect(session['curr_url'])
+
+@app.route('/journal')  
+def journal():
+    return render_template("journal.html")
+
+@app.route('/get_prompt', methods=['POST'])  
+def get_prompt():
+    prompt = get_journaling_prompt([])
+    return jsonify({'prompt': prompt})
 
 
 @app.route('/signup', methods=['POST'])
@@ -80,9 +100,12 @@ def signup():
         user = auth.create_user(uid=username, password=password)
 
 
+        password_hash = generate_password_hash(password)
+
         username_ref.set({
             'uid': user.uid,
-            'username': username
+            'username': username,
+            'password_hash': password_hash
         })
 
         session['is_logged_in'] = True
@@ -94,11 +117,32 @@ def signup():
         print(f"Error creating user: {e}")
         return jsonify({'error': str(e)}), 400
     
+
 @app.route('/signin', methods=['POST'])
 def signin():
-    
-    return jsonify({'error': 'meow'}), 400
-    
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if not username or not password:
+        return jsonify({'error': 'Missing username or password'}), 400
+
+    username_ref = db.collection('usernames').document(username)
+    user_doc = username_ref.get()
+
+    if not user_doc.exists:
+        return jsonify({'error': 'User does not exist'}), 404
+
+    user_data = user_doc.to_dict()
+    stored_hash = user_data.get('password_hash')
+
+    if stored_hash and check_password_hash(stored_hash, password):
+        session['is_logged_in'] = True
+        session['username'] = username
+        return jsonify({'message': 'Login successful'}), 200
+    else:
+        return jsonify({'error': 'Invalid credentials'}), 401
+
+
 @app.route('/user_exists', methods=['POST'])
 def user_exists():
     username = request.form.get('username')

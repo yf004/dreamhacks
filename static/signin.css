@@ -126,6 +126,18 @@ label{
     font-size: 90%;
 }
 
+#welcome{
+    font-size: 200%;
+    background-color: transparent;
+    font-family: "Bungee", sans-serif;
+    margin-top: 2vh;
+}
+
+#login{
+    font-size: 120%;
+    margin-top: 4vh;
+}
+
 
 #error{
     color: var(--primary-color);
@@ -145,6 +157,5 @@ label{
   align-items: center;
   gap: 2px
 }
-
 
 

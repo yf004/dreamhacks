@@ -4,7 +4,7 @@ from typing import List, Dict
 
 import sys
 from pathlib import Path
-from EmotionAnalyzer import EmotionAnalyzer
+from .EmotionAnalyzer import EmotionAnalyzer
 
 parent_dir = Path('..')
 sys.path.append(str(parent_dir.resolve()))

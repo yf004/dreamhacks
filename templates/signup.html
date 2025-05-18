@@ -26,7 +26,10 @@
         <span id="error">testtest</span>
 
         <hr style="width: 80%; margin: 0 auto;">
-        <button id="google">idk google wooo</button>
+        <button id="google">
+            Sign in With Google
+            <img src="{{ url_for('static', filename='images/google.png') }}" alt="Google" style="width: 20px; height: 20px; margin-left: 5px;">
+        </button>
 
 
 
@@ -108,6 +111,12 @@
 
         async function validateUsername(username) {
             error = document.getElementById('error');
+            if (username.length < 3 || username.length > 20) {
+                error.style.display = "block";
+                error.textContent = "Username must be between 3 and 20 characters.";
+                return false;
+            }
+
             let formData = new FormData();
             formData.append('username', username);
             const response = await fetch('/user_exists', {
@@ -129,7 +138,15 @@
 
 
         document.getElementById("google").onclick = function() {
-            window.location.href = "{{ url_for('signup_w_google') }}";
+            let formData = new FormData();
+            formData.append('curr_url', "signup_page");
+            fetch('/signup_w_google', {
+                method: 'POST',
+                body: formData,
+                keepalive: true // helps send data even if page unloads
+            }).catch(err => {
+                console.error('Failed to send:', err);
+            });
         };
 
     </script>

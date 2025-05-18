@@ -1,67 +1,251 @@
-* {
-	box-sizing: border-box;
+:root {
+  --primary-color: #A38172;
+  --dark-primary-color: #544947;
+  --light-primary-color: #F8E9DA;
+  --transparent-white: rgba(255, 255, 255, 0.45);
+  --transparent-dark-primary-color: rgba(84, 73, 71, 0.55);
 }
-body {
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	font-size: 14px;
-	height: 100vh;
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  display: flex;
+  flex-direction: column;
+  background-image: url('/static/images/background.png');
+  background-size: cover;         /* 🚨 THIS makes it fill and crop */
+  background-position: center;    /* center it in the viewport */
+  background-repeat: no-repeat;   /* don’t tile the image */
+  height: 100vh;                  /* full viewport height */
+  width: 100vw;  
+  overflow: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
-.background {
-	width: 100%;
-	height: 100%;
-	background: url('/static/images/background.png');
-	background-repeat: no-repeat;
-	background-position: center center;
-	background-size: cover;
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+body::-webkit-scrollbar {
+  display: none;
 }
-.title {
-	color: rgba(78,68,57,1);
-	font-family: Bungee, sans-serif;
-	font-size: 50px;
-	text-align: center;
-	width: 100%;
-	white-space: nowrap;
-	overflow: hidden;
-	position: absolute;
-	top: 10px;
-	left: 0;
-	right: 0;
+
+.nav-item{
+  border-radius: 10px;
+  padding: 10px 20px;
+  color: var(--light-primary-color);
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  font-family: "Bungee", sans-serif;
 }
-.main-content {
-	width: 98%;
-	height: 89%;
-	background: rgba(233,230,220,0.7);
-	position: relative;
-	border: 3px solid rgba(78,68,57,1);
-	margin-top: 90px;
-	display: flex;
-	flex-direction: column;
-	padding: 20px;
+
+#navbar {
+  padding: 2.1vh 2vw;
+  display: flex;
+  gap: 20px;
+  flex-direction: row;
+  background-color: var(--dark-primary-color);
+  padding-left: 5vw;
 }
+
+
+#center-container {
+    display: flex; /* Use flexbox */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    align-self: center;
+    margin-top: 4vh;
+    flex-direction: column;
+    text-align: center;
+    background-color: var(--transparent-white);
+    border-radius: 10px;
+    padding: 5vh 5vw;
+    color: var(--dark-primary-color);
+}
+
+#top-bar{
+    display: flex;
+    padding: 4px 5px;
+    flex-direction: column;
+    width: 75vw;
+    justify-content: space-between; 
+    padding-right: 5vw;
+    padding-right: 5vw;
+    gap: 5px;
+}
+.daymonth{
+  display: flex;
+  flex-direction: row;
+  gap: 5vw;
+}
+
+.dropdown {
+  display: inline-block;
+  position: relative;
+  align-self: flex-end;
+  text-align: center;
+  padding: 5px 10px;
+
+}
+
+.dropdown:hover {
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 8px;
+
+}
+
+#month{
+  font-family: "Bungee", sans-serif;
+  font-size: 24px;
+}
+#day{
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--transparent-white);
+  min-width: 160px;
+  z-index: 1;
+  flex-direction: column;
+  border-radius: 5px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: flex;
+}
+
+.dropdown-content span:hover {
+  background-color: var(--transparent-dark-primary-color);
+  color: white;
+}
+.dropdown-content span {
+    padding: 2.2vh 2vw;
+    cursor: pointer;
+    border-radius: 5px;
+    color: var(--dark-primary-color);
+}
+
+#top-bar .dropdown {
+    margin-left: auto; 
+}
+
+#top-bar > div.dropdown + .dropdown {
+    margin-left: 2vw; /* Add spacing between the right-aligned dropdowns */
+}
+
+
+#journal{
+    height: 55vh;
+    width: 100%;
+    background-color: var(--transparent-white);
+    border-radius: 8px;
+    border: 2px solid var(--transparent-dark-primary-color);
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2vh;
+}
+#journal-input{
+    background-color: transparent;
+    color: var(--dark-primary-color);
+    height: 90%;
+    width: 95%;
+    text-align: left;
+    padding: 10px 15px;
+    resize: none;
+    border: none;
+    display: block;
+    align-items: center;
+    }
+#journal-input:focus{
+    border: none;
+    outline: none;
+}
+
+#bottom-bar{
+    display: flex;
+    padding: 4px 5px;
+    flex-direction: row;
+    gap: 5vw;
+    width: 75vw;
+    justify-content: flex-end; 
+    padding-right: 5vw;
+    width: 100%;
+}
+
+
+
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;        
+    font-size: 12px;
+    padding: 10px 20px;
+    margin: 2vh;
+    font-family: "Bungee", sans-serif;
+    font-weight: 300;
+
+}
+button:hover {
+    background-color: transparent;
+    border: 3px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+#prompt{
+    background-color: var(--dark-primary-color);
+    color: white;
+    border-radius: 10px;
+    border: 2px solid var(--light-primary-color);
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 25px;
+    min-width: 50vw;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
+
+#prompt-title{
+    font-family: "Bungee", sans-serif;
+    color: var(--light-primary-color);
+    margin-bottom: 5px;
+}
+
+#prompt-text{
+    text-align: left;
+}
+
+#close{
+    background-color: transparent;
+    color: var(--light-primary-color);
+    border: none;
+    font-family: "Bungee", sans-serif;
+    align-self: flex-end;
+    padding: 0px;
+    margin: 0px;
+}
+
+
+
+
 .top-controls {
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 15px;
 	flex-wrap: wrap;
 }
-.daymonth {
-	color: rgba(78,68,57,1);
-	font-family: 'Roboto Mono', monospace;
-	font-size: 22px;
-	margin-top: 7px;
-	margin-left: 5px;
-	text-align: left;
-}
-.format-controls {
+
+
+.format-toolbar {
 	display: flex;
-	gap: 20px;
 }
+
+
 .control-btn {
 	color: rgba(78,68,57,1);
 	font-family: 'Roboto Mono', monospace;
@@ -93,8 +277,7 @@ body {
 }
 /* Fixed list spacing issues */
 .textbox ul, .textbox ol {
-	padding-left: 40px;
-	margin: 20px 0;
+	margin: 10px 0;
 }
 .textbox li {
 	margin-bottom: 5px;
@@ -109,18 +292,9 @@ body {
 .bottom-controls {
 	display: flex;
 	justify-content: flex-end;
-	width: 100%;
+	width: 70%;
 }
-.back-btn {
-	background: rgba(255,255,255,1);
-	border: 3px solid rgba(78,68,57,1);
-	padding: 7px 40px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
-	transition: background-color 0.2s;
-}
+
 .back-btn:hover {
 	background-color: rgba(233,230,220,1);
 }
@@ -133,33 +307,36 @@ body {
 /* Format toolbar improved styles */
 .format-toolbar {
 	display: flex;
-	gap: 10px;
-	flex-wrap: wrap;
+	gap: 4px;
+	flex-wrap: nowrap;
+  align-items: center;
+  width: 70%;
 }
 .format-toolbar button {
 	background: white;
 	border: 2px solid rgba(78,68,57,1);
-	width: 45px;
-	height: 45px;
+	width: 20px;
+	height: 30px;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	font-family: 'Roboto Mono', monospace;
-	font-size: 18px;
+	font-size: 12px;
 	font-weight: bold;
+  color: var(--dark-primary-color);
 }
 .format-toolbar button:hover {
 	background-color: rgba(233,230,220,1);
 }
-/* Font family selector */
+
 .font-selector {
 	min-width: 130px;
-	height: 45px;
+	height: 25px;
 	background: white;
 	border: 2px solid rgba(78,68,57,1);
 	font-family: 'Roboto Mono', monospace;
-	font-size: 16px;
+	font-size: 10px;
 	padding: 0 10px;
 	cursor: pointer;
 }
@@ -168,15 +345,16 @@ body {
 }
 /* Font size selector */
 .font-size-selector {
-	width: 150px;
-	height: 45px;
+	width: 10vwx;
+	height: 25px;
 	background: white;
 	border: 2px solid rgba(78,68,57,1);
 	font-family: 'Roboto Mono', monospace;
-	font-size: 16px;
+	font-size: 10px;
 	padding: 0 10px;
 	cursor: pointer;
 }
+
 .font-size-selector:hover {
 	background-color: rgba(233,230,220,1);
 }
