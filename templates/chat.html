@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Bungee&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <title>chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
+</head>
+<body>
+    <div id="navbar">
+        <div id="nav-home" class="nav-item">Home</div>
+        <div id="nav-journal" class="nav-item">Journal</div>
+        <div id="nav-chat" class="nav-item">Chatbot</div>
+        <div id="nav-emotion" class="nav-item">Emotion Analysis</div>
+    </div>
+    
+    <div class="main-container">
+        <div class="chat-rectangle">
+            <div class="messages-area" id="messagesArea">
+                <!-- Messages will appear here -->
+            </div>
+            
+            <div class="input-container">
+                <textarea 
+                    class="input-box" 
+                    id="messageInput"
+                    placeholder="Ask me anything"
+                    rows="1"
+                ></textarea>
+                <button class="send-button" id="sendButton">
+                    <div class="send-icon">
+                        <img src="../static/images/send.png" alt="Send">
+                    </div>
+                </button>
+            </div>
+        </div>
+        
+        <button class="back-button">Back</button>
+    </div>
+    <script src="../static/chat.js"></script>
+</body>
+</html>
