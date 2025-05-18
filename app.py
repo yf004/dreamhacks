@@ -175,13 +175,7 @@ def home():
 @app.route('/chat')
 def chat():
     if 'is_logged_in' in session and session['is_logged_in']:
-        return redirect('/')
-    return redirect('/signin_page')
-
-@app.route('/emotion')
-def emotion():
-    if 'is_logged_in' in session and session['is_logged_in']:
-        return redirect('/')
+        return render_template('chat.html')
     return redirect('/signin_page')
 
 @app.route('/journal')
@@ -189,11 +183,6 @@ def journal():
     if 'is_logged_in' in session and session['is_logged_in']:
         return render_template('journal.html')
     return redirect('/signin_page')
-
-@app.route('/testhome')
-def test():
-    return render_template('home.html')
-
 
 @app.route('/get_username', methods=['GET'])
 def get_data():

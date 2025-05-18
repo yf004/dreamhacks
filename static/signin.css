@@ -59,7 +59,7 @@ body {
     align-items: center; /* Center items vertically */
     justify-content: center; /* Center items horizontally */
     align-self: center;
-    margin-top: 4vh;
+    margin-top: 10vh;
     flex-direction: column;
     text-align: center;
     background-color: var(--transparent-white);

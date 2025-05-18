@@ -59,13 +59,14 @@ body {
     align-items: center; /* Center items vertically */
     justify-content: center; /* Center items horizontally */
     align-self: center;
-    margin-top: 4vh;
     flex-direction: column;
     text-align: center;
     background-color: var(--transparent-white);
     border-radius: 10px;
     padding: 5vh 5vw;
     color: var(--dark-primary-color);
+    margin-top: 10vh;
+
 }
 
 button {

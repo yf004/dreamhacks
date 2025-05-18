@@ -13,10 +13,9 @@
                 <div class="logo">Bloopi</div>
             </div>
             <div class="nav-container">
-                <div class="nav-item">Home</div>
-                <div class="nav-item">Journal</div>
-                <div class="nav-item">Chatbot</div>
-                <div class="nav-item">Emotion Analysis</div>
+                <div id='nav-home' class="nav-item">Home</div>
+                <div id='nav-journal' class="nav-item">Journal</div>
+                <div id='nav-chat' class="nav-item">Chatbot</div>
                 <button id="logout">Logout</button>
             </div>
         </div>
@@ -49,5 +48,27 @@
         </div>
     </div>
     <script src="../static/calendar.js"></script>
+
+    <script>
+        function setUpNavBar(curr){
+            document.getElementById('nav-home').onclick = function(){
+                if (curr!== 'home'){window.location.href = "/home";}
+            };
+            document.getElementById('nav-journal').onclick = function(){
+                if (curr!== 'journal'){window.location.href = "/journal";}
+            };
+            document.getElementById('nav-chat').onclick = function(){
+                if (curr!== 'chat'){window.location.href = "/chat";}
+            };
+        }
+
+        document.addEventListener("DOMContentLoaded", (event) => {
+            setUpNavBar('journal')
+            document.getElementById('logout').onclick = async function(){
+                window.location.href = "/logout";
+            }
+        });
+
+    </script>
 </body>
 </html>
