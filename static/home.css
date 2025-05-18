@@ -198,30 +198,32 @@ body {
 
 .date-number,
 .calendar-date {
-	width: clamp(35px, 4vw, 50px);
-	height: clamp(35px, 4vw, 50px);
+	width: clamp(45px, 4vw, 50px);
+	height: clamp(45px, 4vw, 50px);
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin: 0 auto;
 	font-size: clamp(16px, 2vw, 20px);
 	color: rgba(78,68,57,1);
-	cursor: pointer;
-	transition: background-color 0.3s ease;
-}
-
-.date-number:hover,
-.calendar-date:hover {
-	background-color: rgba(191,126,92,0.2);
-	border-radius: 50%;
+	background-color: #f2f2f2;
+	border-radius: 5%;
 }
 
 .current-date,
 .calendar-date.today {
-	background-color: rgba(191,126,92,255);
-	color: white;
-	border-radius: 50%;
+	background-color: #f2f2f2;
+	color: rgba(78,68,57,1);
+	border: 2px solid rgba(78,68,57,1);
+	border-radius: 5%;
 }
+
+
+/* pretend this is a loop */
+.current-date.emotion-sad,.calendar-date.today.emotion-sad {background-color: #fa9391;}
+.current-date.emotion-unhappy, .calendar-date.today.emotion-unhappy { background-color: #ffc1aa; }
+.current-date.emotion-neutral, .calendar-date.today.emotion-neutral { background-color: #fbe693; }
+.current-date.emotion-happy,.calendar-date.today.emotion-happy {background-color: #ace190;}
+.current-date.emotion-excited,.calendar-date.today.emotion-excited {background-color: #64d69e;}
 
 .other-month,
 .calendar-date.other-month {
@@ -310,17 +312,20 @@ body {
 	font-size: clamp(20px, 3vw, 28px);
 	cursor: pointer;
 	transition: transform 0.3s ease;
+	background-color: #d6d5d3; 
 }
 
 .emotion:hover {
 	transform: scale(1.1);
 }
 
-.sad { background-color: #f44336; }
-.unhappy { background-color: #ff9800; }
-.neutral { background-color: #ffeb3b; }
-.happy { background-color: #8bc34a; }
-.excited { background-color: #4caf50; }
+.emotion.sad { background-color: #fa9391; }
+.emotion.unhappy { background-color: #ffc1aa; }
+.emotion.neutral { background-color: #fbe693; }
+.emotion.happy { background-color: #ace190; }
+.emotion.excited { background-color: #64d69e; }
+
+
 
 /* Day month that overlaps columns */
 .day-month-container {

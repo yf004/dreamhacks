@@ -190,10 +190,9 @@ def journal():
         return render_template('journal.html')
     return redirect('/signin_page')
 
-@app.route('/testchat')
+@app.route('/testhome')
 def test():
-    return render_template('chat.html')
-
+    return render_template('home.html')
 
 
 @app.route('/get_username', methods=['GET'])
