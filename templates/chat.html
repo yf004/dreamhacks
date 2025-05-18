@@ -25,6 +25,16 @@
         <div class="main-content">
             <div class="main-container">
                 <div class="chat-rectangle">
+                    <div class="chat-header">
+                        <div class="chat-title">Chat Assistant</div>
+                        <div class="mode-toggle">
+                            <span class="mode-label">Talk</span>
+                            <div class="toggle-switch" id="modeToggle">
+                                <div class="toggle-slider"></div>
+                            </div>
+                            <span class="mode-label">Therapy</span>
+                        </div>
+                    </div>
                     <div class="messages-area" id="messagesArea">
                         <!-- Messages will appear here -->
                     </div>
@@ -43,20 +53,31 @@
                         </button>
                     </div>
                 </div>
-                            </div>
+                
+                <button class="back-button">Back</button>
+            </div>
         </div>
     </div>
+    
     <script>
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
         const messagesArea = document.getElementById('messagesArea');
 
-        messageInput.style.height = '3.75rem'; 
+        // Set initial height for the textarea
+        messageInput.style.height = '3.75rem'; // Initial size for one line
 
+        // Auto-resize textarea with maximum height limit
         messageInput.addEventListener('input', function() {
-        this.style.height = '3.75rem'; 
+        // Reset height to auto first to get accurate scroll height
+        this.style.height = '3.75rem'; // Start with single line height
+        
+        // Only grow if content exceeds current height
         if (this.scrollHeight > this.clientHeight) {
+            // Calculate new height with a maximum limit (4 lines approximately)
             const newHeight = Math.min(this.scrollHeight, 120);
+        
+            // Apply the new height in pixels for smoother transition
             this.style.height = newHeight + 'px';
         }
         });
@@ -113,29 +134,10 @@
         console.log('Back button clicked');
         });
 
-        function setUpNavBar(curr){
-            document.getElementById('nav-home').onclick = function(){
-                if (curr!== 'home'){window.location.href = "/home";}
-            };
-            document.getElementById('nav-journal').onclick = function(){
-                if (curr!== 'journal'){window.location.href = "/journal";}
-            };
-            document.getElementById('nav-chat').onclick = function(){
-                if (curr!== 'chat'){window.location.href = "/chat";}
-            };
-        }
-
-        document.addEventListener("DOMContentLoaded", (event) => {
-            setUpNavBar('chat')
-            document.getElementById('logout').onclick = async function(){
-                window.location.href = "/logout";
-            }
-        });
-
-
-        async function get_ai_response(user_input){
-            
-        }
+        //toggle button
+        document.getElementById('modeToggle').addEventListener('click', function() {
+                    this.classList.toggle('active');
+                });
     </script>
 </body>
 </html>
