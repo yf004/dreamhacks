@@ -3,6 +3,15 @@
 	font-family: 'Roboto Mono', monospace;
 }
 
+:root {
+  --primary-color: #A38172;
+  --dark-primary-color: #544947;
+  --light-primary-color: #F8E9DA;
+  --transparent-white: rgba(255, 255, 255, 0.45);
+  --transparent-dark-primary-color: rgba(84, 73, 71, 0.55);
+  --transparent-primary-color: rgba(163, 129, 114, 0.25);
+}
+
 body {
 	margin: 0;
 	padding: 0;
@@ -14,6 +23,7 @@ body {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
+	border-radius: 10px;
 }
 
 .main-container {
@@ -69,9 +79,10 @@ body {
 	position: relative;
 	z-index: 5;
 	color: rgba(78,68,57,1);
+	border-radius: 5px;
 }
 
-.logout {
+#logout {
 	border: 2px solid rgba(78,68,57,1);
 	padding: 15px 20px;
 	margin: 20px 20px 40px 20px;
@@ -160,6 +171,7 @@ body {
 
 .calendar-nav button:hover {
 	background-color: rgba(191,126,92,0.2);
+	border-radius: 5px;
 }
 
 .calendar {
@@ -361,6 +373,28 @@ body {
 	}
 }
 
+#profile{
+	border-radius: 10px;
+	border: 2px solid rgba(78,68,57,1);
+	margin-left: 20px;
+	margin-right: 40px;
+	padding: 10px 15px;
+	background-color: var(--transparent-white);
+	gap: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
+#profile-name{
+	font-weight: bold;
+	white-space: nowrap;        /* Prevents text from wrapping */
+    overflow: hidden;           /* Hides overflow text */
+    text-overflow: ellipsis;  
+}
+
+#nav-home{
+	background-color: var(--transparent-primary-color);
+}
 @media (max-width: 768px) {
 	.main-container {
 		flex-direction: column;

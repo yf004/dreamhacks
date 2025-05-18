@@ -37,51 +37,52 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 @app.route("/")
-def home(): #bruhhhhhhhhhhhhhhhhh i was so confused pls oml
+def index(): #bruhhhhhhhhhhhhhhhhh i was so confused pls oml
     return render_template("landing_page.html")
 
 @app.route("/signup_page")
 def signup_page():
     if 'is_logged_in' in session and session['is_logged_in']:
-        return redirect('/home_page')
+        return redirect('/home')
     return render_template("signup.html")
 
 @app.route("/signin_page")
 def signin_page():
+    print('called3')
     if 'is_logged_in' in session and session['is_logged_in']:
-        return redirect('/home_page')
+        return redirect('/home')
 
     return render_template("signin.html")
 
-@app.route("/home_page")
-def home_page():
-    if 'is_logged_in' in session and session['is_logged_in']:
-        return render_template("home_page.html")
-    return redirect('/')
-
-
-    
-
-@app.route('/signup_w_google', methods=['POST'])
+@app.route('/signup_w_google')
 def signup_w_google():
-    curr_url = request.form.get('curr_url')
+    print('called1')
+    curr_url = url_for(request.args.get('curr_url'))
     session['curr_url'] = curr_url
     redirect_uri = url_for('auth_callback', _external=True)
     return google.authorize_redirect(redirect_uri)
 
 @app.route('/auth/callback')
 def auth_callback():
+    print('called2')
     token = google.authorize_access_token()
+
     resp = google.get('userinfo')
     user_info = resp.json()
+
     session['email'] = user_info['email']
     session['is_logged_in'] = True
+    
+    curr_url = session['curr_url']
+    session['curr_url'] = None
 
-    return redirect(session['curr_url'])
+    return redirect(curr_url)
 
-@app.route('/journal')  
-def journal():
-    return render_template("journal.html")
+@app.route('/journal_entry')  
+def journal_entry():
+    if 'is_logged_in' in session and session['is_logged_in']:
+        return render_template("journal_entry.html")
+    return render_template("signin.html")
 
 @app.route('/get_prompt', methods=['POST'])  
 def get_prompt():
@@ -164,6 +165,44 @@ def logout():
     if 'email' in session:
         session.pop('email', None)
     return redirect('/')
+
+@app.route('/home')
+def home():
+    if 'is_logged_in' in session and session['is_logged_in']:
+        return render_template("home.html")
+    return redirect('/signin_page')
+
+@app.route('/chat')
+def chat():
+    if 'is_logged_in' in session and session['is_logged_in']:
+        return redirect('/')
+    return redirect('/signin_page')
+
+@app.route('/emotion')
+def emotion():
+    if 'is_logged_in' in session and session['is_logged_in']:
+        return redirect('/')
+    return redirect('/signin_page')
+
+@app.route('/journal')
+def journal():
+    if 'is_logged_in' in session and session['is_logged_in']:
+        return render_template('journal.html')
+    return redirect('/signin_page')
+
+
+
+@app.route('/get_username', methods=['GET'])
+def get_data():
+    if 'email' in session:
+        user = session['email']
+        return jsonify({"name": user})
+    elif 'username' in session:
+        user = session['email']
+        return jsonify({"name": user})
+    else:
+        redirect('/signin_page')
+    
 
 
 if __name__ == "__main__":

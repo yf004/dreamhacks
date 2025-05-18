@@ -138,16 +138,10 @@
 
 
         document.getElementById("google").onclick = function() {
-            let formData = new FormData();
-            formData.append('curr_url', "signup_page");
-            fetch('/signup_w_google', {
-                method: 'POST',
-                body: formData,
-                keepalive: true // helps send data even if page unloads
-            }).catch(err => {
-                console.error('Failed to send:', err);
-            });
+            window.location.href = "/signup_w_google?curr_url=signup_page";
         };
+
+        
 
     </script>
 
