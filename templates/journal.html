@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Bungee&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lora&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <title>Bloopi - Journal</title>
+</head>
+<body>
+    <div class="background">
+        <div class="title"> --- --- --- --- --- --- --- ---   Bloopi   --- --- --- --- --- --- --- --- </div>
+        
+        <div class="main-content">
+            <div class="top-controls">
+                <div class="daymonth"><b>Day</b> Month</div>
+                <div class="format-controls">
+                    <!-- Format toolbar will be inserted here by JavaScript -->
+                </div>
+            </div>
+            
+            <div id="journal-text" class="textbox" contenteditable="true"></div>
+            
+            <div class="bottom-controls">
+                <div class="back-btn" onclick="saveJournal()">
+                    <span class="back">Back</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../static/journal.js"></script>
+</body>
+</html>
