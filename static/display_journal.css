@@ -1,0 +1,147 @@
+:root {
+  --primary-color: #A38172;
+  --dark-primary-color: #544947;
+  --light-primary-color: #F8E9DA;
+  --transparent-white: rgba(255, 255, 255, 0.45);
+  --transparent-dark-primary-color: rgba(84, 73, 71, 0.55);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  display: flex;
+  flex-direction: column;
+  background-image: url('/static/images/background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100vw;  
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-item {
+  border-radius: 10px;
+  padding: 10px 20px;
+  color: var(--light-primary-color);
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  font-family: "Bungee", sans-serif;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.nav-item:hover {
+  transform: translateY(-5px);
+  background-color: var(--primary-color);
+}
+
+#navbar {
+  padding: 2.1vh 2vw;
+  display: flex;
+  gap: 20px;
+  flex-direction: row;
+  background-color: var(--dark-primary-color);
+  padding-left: 5vw;
+}
+
+#center-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  margin-top: 4vh;
+  flex-direction: column;
+  text-align: center;
+  background-color: var(--transparent-white);
+  border-radius: 10px;
+  padding: 5vh 5vw;
+  color: var(--dark-primary-color);
+}
+
+#top-bar {
+  display: flex;
+  padding: 4px 5px;
+  flex-direction: column;
+  width: 75vw;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.daymonth {
+  display: flex;
+  flex-direction: row;
+  gap: 5vw;
+}
+
+#month {
+  font-family: "Bungee", sans-serif;
+  font-size: 24px;
+}
+
+#day {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+#journal {
+  height: 55vh;
+  width: 100%;
+  background-color: var(--transparent-white);
+  border-radius: 8px;
+  border: 2px solid var(--transparent-dark-primary-color);
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2vh;
+}
+
+#journal-content {
+  background-color: transparent;
+  color: var(--dark-primary-color);
+  height: 90%;
+  width: 95%;
+  text-align: left;
+  padding: 10px 15px;
+  overflow-y: auto;
+  font-family: 'Roboto Mono', serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+#bottom-bar {
+  display: flex;
+  padding: 4px 5px;
+  flex-direction: row;
+  width: 100%;
+  justify-content: flex-end;
+  padding-right: 5vw;
+}
+
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;        
+    font-size: 12px;
+    padding: 10px 20px;
+    margin: 2vh;
+    font-family: "Bungee", sans-serif;
+    font-weight: 300;
+
+}
+button:hover {
+    background-color: transparent;
+    border: 3px solid var(--primary-color);
+    color: var(--primary-color);
+}
