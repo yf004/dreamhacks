@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Bungee&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='display_journal.css') }}">
+    <title>Journal Display</title>
+</head>
+<body>
+    <div id="navbar">
+        <div id='nav-home' class="nav-item">Home</div>
+        <div id='nav-journal' class="nav-item">Journal</div>
+        <div id='nav-chat' class="nav-item">Chatbot</div>
+        <div id='nav-emotion' class="nav-item">Emotion Analysis</div>
+    </div>
+
+    <div id="center-container">
+        <div id="top-bar">
+            <div class="daymonth">
+                <span id="day"></span>
+                <span id="month"></span>
+            </div>
+        </div>
+        <div id="journal">
+            <div id="journal-content">[insert journal content]</div>
+        </div>
+
+        <div id="bottom-bar">
+            <button id="back-btn">Back</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("day").textContent = new Date().getDate();
+        document.getElementById("month").textContent = new Date().toLocaleString('default', { month: 'long' });
+        
+        // Event listeners for navigation
+        document.getElementById("nav-home").addEventListener("click", function() {
+            window.location.href = "/";
+        });
+        
+        document.getElementById("back-btn").addEventListener("click", function() {
+            window.history.back();
+        });
+    </script>
+</body>
+</html>

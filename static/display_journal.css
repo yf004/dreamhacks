@@ -19,8 +19,8 @@ html, body {
   height: 100vh;
   width: 100vw;  
   overflow: auto;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 body::-webkit-scrollbar {
@@ -53,21 +53,24 @@ body::-webkit-scrollbar {
 
 #center-container {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   align-self: center;
   margin-top: 4vh;
+  flex-direction: column;
+  text-align: center;
   background-color: var(--transparent-white);
   border-radius: 10px;
   padding: 5vh 5vw;
   color: var(--dark-primary-color);
-  width: 75vw;
-  margin-bottom: 20px;
 }
 
 #top-bar {
   display: flex;
+  padding: 4px 5px;
   flex-direction: column;
-  width: 100%;
+  width: 75vw;
+  justify-content: space-between;
   gap: 5px;
 }
 
@@ -94,33 +97,32 @@ body::-webkit-scrollbar {
   border-radius: 8px;
   border: 2px solid var(--transparent-dark-primary-color);
   display: flex;
+  align-content: center;
   align-items: center;
   justify-content: center;
   margin-top: 2vh;
 }
 
-#journal-input {
+#journal-content {
   background-color: transparent;
   color: var(--dark-primary-color);
   height: 90%;
   width: 95%;
   text-align: left;
   padding: 10px 15px;
-  resize: none;
-  border: none;
-}
-
-#journal-input:focus {
-  border: none;
-  outline: none;
+  overflow-y: auto;
+  font-family: 'Roboto Mono', serif;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 #bottom-bar {
   display: flex;
+  padding: 4px 5px;
   flex-direction: row;
   width: 100%;
   justify-content: flex-end;
-  margin-top: 2vh;
+  padding-right: 5vw;
 }
 
 button {
@@ -140,97 +142,4 @@ button:hover {
   background-color: transparent;
   border: 3px solid var(--primary-color);
   color: var(--primary-color);
-}
-
-#prompt {
-  background-color: var(--dark-primary-color);
-  color: white;
-  border-radius: 10px;
-  border: 2px solid var(--light-primary-color);
-  display: none;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 20px 25px;
-  min-width: 50vw;
-  margin-top: 2vh;
-  margin-bottom: 2vh;
-}
-
-#prompt-title {
-  font-family: "Bungee", sans-serif;
-  color: var(--light-primary-color);
-  margin-bottom: 5px;
-}
-
-#prompt-text {
-  text-align: left;
-}
-
-#close {
-  background-color: transparent;
-  color: var(--light-primary-color);
-  border: none;
-  font-family: "Bungee", sans-serif;
-  align-self: flex-end;
-  padding: 0px;
-  margin: 0px;
-}
-
-/* AI things */
-.separator {
-  border-top: 3px dotted var(--dark-primary-color);
-  margin: 30px 0;
-  width: 100%;
-  display: none;
-}
-
-#analysis-container {
-  display: none;
-  background-color: var(--transparent-white);
-  border-radius: 8px;
-  border: 2px solid var(--transparent-dark-primary-color);
-  min-height: 30vh;
-  width: 100%;
-  margin-top: 20px;
-  padding: 15px;
-  box-sizing: border-box;
-  position: relative
-}
-
-#analysis-title {
-  font-family: "Bungee", sans-serif;
-  font-size: 20px;
-  color: var(--dark-primary-color);
-  margin-bottom: 15px;
-}
-
-#analysis-text {
-  color: var(--dark-primary-color);
-  font-family: 'Roboto Mono', monospace;
-  white-space: pre-wrap;
-  line-height: 1.5;
-}
-
-<<<<<<< HEAD
-.font-size-selector:hover {
-	background-color: rgba(233,230,220,1);
-}
-
-#back{
-  align-self: flex-start;
-=======
-#close-analysis {
-  background-color: transparent;
-  color: var(--dark-primary-color);
-  border: none;
-  font-family: "Bungee", sans-serif;
-  padding: 5px;
-  margin: 0px;
-  cursor: pointer;
-  font-size: 16px;
-  z-index: 10;
-  position: absolute; 
-  top: 10px; 
-  right: 15px;
->>>>>>> 45d6b2fb7c82d4f225f6a40a62d54be4da829eb3
 }
