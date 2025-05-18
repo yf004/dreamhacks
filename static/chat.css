@@ -90,21 +90,6 @@ body {
 	padding-right: var(--spacing-sm);
 }
 
-.message-bubble {
-	background: var(--message-bg-color);
-	border-radius: var(--border-radius-small);
-	padding: var(--spacing-sm) var(--spacing-md);
-	margin-bottom: var(--spacing-sm);
-	font-family: 'Roboto Mono', monospace;
-	font-size: 0.875rem;
-	color: var(--main-text-color);
-	max-width: 80%;
-	word-wrap: break-word;
-	display: block;
-	text-align: left;
-	float: right;
-	clear: both;
-}
 
 /* Input area */
 .input-container {
@@ -202,6 +187,39 @@ body {
 .messages-area::-webkit-scrollbar-thumb:hover,
 .input-box::-webkit-scrollbar-thumb:hover {
 	background: rgba(78, 68, 57, 0.5);
+}
+
+/* message UI */
+.message-bubble.user-message {
+	background: var(--message-bg-color);
+	border-radius: var(--border-radius-small);
+	padding: var(--spacing-sm) var(--spacing-md);
+	margin-bottom: var(--spacing-sm);
+	font-family: 'Roboto Mono', monospace;
+	font-size: 0.875rem;
+	color: var(--main-text-color);
+	max-width: 80%;
+	word-wrap: break-word;
+	display: block;
+	text-align: left;
+	float: right;
+	clear: both;
+}
+
+.message-bubble.ai-message {
+	background: rgba(232, 178, 132, 0.9); 
+	border-radius: var(--border-radius-small);
+	padding: var(--spacing-sm) var(--spacing-md);
+	margin-bottom: var(--spacing-sm);
+	font-family: 'Roboto Mono', monospace;
+	font-size: 0.875rem;
+	color: var(--main-text-color);
+	max-width: 80%;
+	word-wrap: break-word;
+	display: block;
+	text-align: left;
+	float: left; /* Align to the left side */
+	clear: both;
 }
 
 /* Responsive design */

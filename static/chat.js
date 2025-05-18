@@ -9,12 +9,12 @@ messageInput.style.height = '3.75rem'; // Initial size for one line
 messageInput.addEventListener('input', function() {
   // Reset height to auto first to get accurate scroll height
   this.style.height = '3.75rem'; // Start with single line height
-  
+ 
   // Only grow if content exceeds current height
   if (this.scrollHeight > this.clientHeight) {
     // Calculate new height with a maximum limit (4 lines approximately)
     const newHeight = Math.min(this.scrollHeight, 120);
-    
+   
     // Apply the new height in pixels for smoother transition
     this.style.height = newHeight + 'px';
   }
@@ -24,19 +24,33 @@ messageInput.addEventListener('input', function() {
 function sendMessage() {
   const message = messageInput.value.trim();
   if (message) {
-    // Create message bubble
-    const messageBubble = document.createElement('div');
-    messageBubble.className = 'message-bubble';
-    messageBubble.textContent = message;
-    
+    // Create user message bubble
+    const userMessageBubble = document.createElement('div');
+    userMessageBubble.className = 'message-bubble user-message';
+    userMessageBubble.textContent = message;
+   
     // Add to messages area
-    messagesArea.appendChild(messageBubble);
-    
+    messagesArea.appendChild(userMessageBubble);
+   
     // Clear input and reset height
     messageInput.value = '';
     messageInput.style.height = '3.75rem';
+   
+    // Add AI response (after a small delay to simulate thinking)
+    setTimeout(() => {
+      // Create AI message bubble
+      const aiMessageBubble = document.createElement('div');
+      aiMessageBubble.className = 'message-bubble ai-message';
+      aiMessageBubble.textContent = "[Insert AI response]";
+   
+      // Add to messages area
+      messagesArea.appendChild(aiMessageBubble);
+   
+      // Scroll messages to bottom
+      messagesArea.scrollTop = messagesArea.scrollHeight;
+    }, 500);
     
-    // Scroll messages to bottom
+    // Scroll messages to bottom after user message
     messagesArea.scrollTop = messagesArea.scrollHeight;
   }
 }
