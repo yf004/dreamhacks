@@ -4,6 +4,7 @@ from .Summarizer import Summarizer
 from .TherapyChatbot import TherapyChatbot
 
 from .EmotionAnalyzer import EmotionAnalyzer
+from.JournalResponseGenerator import JournalResponseGenerator
 
 from typing import List, Dict
 
@@ -60,4 +61,10 @@ def get_journal_summary(entry: str) -> str:
     summarizer = Summarizer()
     return summarizer.generate_insight(entry)
 
+
+def get_response_to_journal(entry:str):
+    responder = JournalResponseGenerator()
+    response = responder.generate_response(entry)
+    print(response)
+    return response
 

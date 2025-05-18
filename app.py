@@ -190,12 +190,21 @@ def get_data():
     else:
         redirect('/signin_page')
 
+@app.route('/get_ai_analysis', methods=['POST'])
+def get_ai_analysis():
+    entry = request.form.get('entry')
+    response = get_response_to_journal(entry)
+    return jsonify({'response': response}), 200
+
 @app.route('/journal_entry', methods=['POST', 'GET'])  
 def journal_entry():
     if 'email' in session:
         username = session['email']
-    else:
+    elif 'username' in session:
         username = session['username']
+    else:
+        return redirect('/signin_page')
+
 
     if request.method == 'POST':
         day = request.form.get('day')
@@ -221,7 +230,7 @@ def retrieve_entry(username, day, month):
             # Create a unique key like '10-May' for lookup
             entries = data.get('journal_entries', {})
             key = f"{day}-{month}"
-            return entries.get(key, '') 
+            return entries.get(key, {}).get('entry', '')
 
     except Exception as e:
         print(f"Error retrieving entry: {e}")
@@ -236,6 +245,8 @@ def save_entry():
         day = request.form.get('day')
         month = request.form.get('month')
         entry = request.form.get('entry')
+
+        summary = get_journal_summary(entry)
         if 'email' in session:
             username = session['email']
         else:
@@ -248,13 +259,19 @@ def save_entry():
         if not doc.exists:
             doc_ref.set({
                 'journal_entries': {
-                    key: entry
+                    key: {
+                        'entry': entry,
+                        'summary': summary
+                    }
                 }
             })
         else:
             doc_ref.set({
                 'journal_entries': {
-                    key: entry
+                    key: {
+                        'entry': entry,
+                        'summary': summary
+                    }
                 }
             }, merge=True)
 
