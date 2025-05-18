@@ -25,20 +25,27 @@
                 <button id="close">X</button>
                 <span id="prompt-title">Prompt: </span>
                 <span id="prompt-text">testeste</span>
-
             </div>
             <div class="format-controls"></div>
         </div>
 
         
-
         <div id="journal">
             <textarea type="text" id="journal-input" placeholder="Write your journal entry here..." ></textarea>
         </div>
 
-        <div id="bottom-bar">
+         <div id="bottom-bar">
             <button id="promptBtn">Get prompt</button>
             <button id="save">Save</button>
+            <button id="finish" style="margin-left: auto;">Finish</button>
+        </div>
+        
+        <div class="separator"></div>
+        
+        <div id="analysis-container">
+            <button id="close-analysis" style="display: block;">X</button>
+            <div id="analysis-title">AI Analysis</div>
+            <div id="analysis-text"></div>
         </div>
 
 		
@@ -103,8 +110,25 @@
 
          });
 
-    </script>
-    <script >
+         /* Finish button */
+        document.getElementById("finish").onclick = function() {
+            // Show separator and analysis container
+            document.querySelector('.separator').style.display = 'block';
+            document.getElementById('analysis-container').style.display = 'block';
+            
+            // Scroll to the analysis section
+            setTimeout(() => {
+                document.getElementById('analysis-container').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+            
+            document.getElementById('analysis-text').textContent = "[insert AI analysis]";
+        }
+
+        /*Close analysis*/
+         document.getElementById("close-analysis").onclick = function() {
+            document.getElementById('analysis-container').style.display = 'none';
+            document.querySelector('.separator').style.display = 'none';
+        }
         
     </script>
 

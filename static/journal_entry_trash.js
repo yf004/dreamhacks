@@ -85,3 +85,17 @@ function applyList(type) {
 		list.style.paddingLeft = '40px';
 	});
 }
+
+/* Finish button */
+document.getElementById("finish").onclick = function() {
+	// Show separator and analysis container
+	document.querySelector('.separator').style.display = 'block';
+	document.getElementById('analysis-container').style.display = 'block';
+	
+	// Scroll to the analysis section
+	setTimeout(() => {
+		document.getElementById('analysis-container').scrollIntoView({ behavior: 'smooth' });
+	}, 100);
+	
+	document.getElementById('analysis-text').textContent = "[insert AI analysis]";
+}
