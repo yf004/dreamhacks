@@ -34,37 +34,102 @@ body {
 	overflow: hidden;
 }
 
-/* Navbar styles */
-#navbar {
+/* New page container for side navbar layout */
+.page-container {
 	display: flex;
-	gap: 20px;
-	background-color: var(--dark-primary-color);
-	padding: 2.1vh 5vw;
+	height: 100vh;
+	width: 100%;
 }
 
-.nav-item {
-	border-radius: 10px;
-	padding: 10px 20px;
-	color: var(--light-primary-color);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-family: "Bungee", sans-serif;
-	cursor: pointer;
-	transition: background-color 0.3s;
-}
+/* Side navbar styles */
+.navbar-column { 
+	width: 280px; 
+	min-width: 280px; 
+	height: 100%; 
+	border-right: 2px solid rgba(78,68,57,1); 
+	display: flex; 
+	flex-direction: column; 
+	position: relative; 
+	background-color: rgba(233,230,220,0.9); 
+}  
 
-.nav-item:hover {
-	background-color: rgba(255, 255, 255, 0.1);
+.logo-container { 
+	padding: 40px 20px; 
+}  
+
+.logo { 
+	font-family: 'Bungee', cursive; 
+	font-size: 44px; 
+	padding: 10px; 
+	color: rgba(78,68,57,1); 
+}  
+
+.nav-container { 
+	display: flex; 
+	flex-direction: column; 
+	gap: 20px; 
+	position: relative; 
+	flex: 1; 
+}  
+
+.nav-item { 
+	border: 2px solid rgba(78,68,57,1); 
+	padding: 15px 20px; 
+	margin-left: 20px; 
+	margin-right: 40px; 
+	text-align: center; 
+	cursor: pointer; 
+	font-size: 18px; 
+	transition: transform 0.3s ease; 
+	background-color: rgba(233,230,220,0.7); 
+	position: relative; 
+	z-index: 5; 
+	color: rgba(78,68,57,1); 
+	border-radius: 5px; 
+	font-family: "Roboto Mono", sans-serif;
+	font-weight: bold;
+}  
+
+#logout {   
+	border: 2px solid rgba(78,68,57,1);   
+	padding: 8px 10px;   
+	margin: 20px 20px 40px 20px;   
+	text-align: center;   
+	cursor: pointer;   
+	font-size: 14px;   
+	background-color: rgba(233,230,220,0.7);   
+	position: relative;   
+	z-index: 5;   
+	color: rgba(78,68,57,1);   
+	margin-top: auto;   
+	transition: background-color 0.3s ease;   
+	width: fit-content;
+	font-family: "Roboto Mono", sans-serif;
+	font-weight: bold;
+}  
+
+#logout:hover { 
+	background-color: rgba(233,230,220,0.9); 
+}  
+
+.nav-item:hover { 
+	transform: translateX(80px); 
+	background-color: rgba(233,230,220,1); 
 }
 
 /* Main content container */
+.main-content {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
 .main-container {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	height: calc(100vh - 67px); /* Adjust based on navbar height */
+	height: 100%;
 	padding: var(--spacing-md);
 	position: relative;
 }
@@ -89,7 +154,6 @@ body {
 	margin-bottom: var(--spacing-lg);
 	padding-right: var(--spacing-sm);
 }
-
 
 /* Input area */
 .input-container {
@@ -158,13 +222,13 @@ body {
 	color: white;
 	transition: all 0.3s ease;
 	margin-top: var(--spacing-md);
-	transform: translateX(41.5vw);
+	align-self: flex-end;
+	margin-right: 5%;
 }
 
 .back-button:hover {
 	background: var(--button-hover-bg-color);
 }
-
 
 /* Scrollbar styling */
 .messages-area::-webkit-scrollbar,
@@ -224,6 +288,15 @@ body {
 
 /* Responsive design */
 @media (max-width: 48rem) {
+	.navbar-column {
+		width: 220px;
+		min-width: 220px;
+	}
+	
+	.logo {
+		font-size: 32px;
+	}
+	
 	.chat-rectangle {
 		width: 95%;
 		height: 75%;
@@ -236,18 +309,54 @@ body {
 }
 
 @media (max-width: 30rem) {
-	#navbar {
+	.page-container {
+		flex-direction: column;
+	}
+	
+	.navbar-column {
+		width: 100%;
+		min-height: 60px;
+		height: auto;
+		border-right: none;
+		border-bottom: 2px solid rgba(78,68,57,1);
+		flex-direction: row;
+		align-items: center;
+	}
+	
+	.logo-container {
+		padding: 10px;
+	}
+	
+	.logo {
+		font-size: 24px;
+	}
+	
+	.nav-container {
+		flex-direction: row;
+		overflow-x: auto;
+		padding: 10px;
 		gap: 10px;
-		padding: 1.5vh 2vw;
 	}
 	
 	.nav-item {
 		padding: 8px 12px;
+		margin: 0 5px;
 		font-size: 0.9rem;
+		white-space: nowrap;
+	}
+	
+	.nav-item:hover {
+		transform: none;
+	}
+	
+	#logout {
+		margin: 0 10px;
+		padding: 8px;
 	}
 	
 	.chat-rectangle {
 		padding: var(--spacing-sm);
+		height: 100%;
 	}
 	
 	.input-box {
@@ -258,5 +367,4 @@ body {
 		width: 2.8rem;
 		height: 2.8rem;
 	}
-	
 }
