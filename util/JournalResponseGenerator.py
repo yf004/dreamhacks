@@ -60,7 +60,7 @@ class JournalResponseGenerator:
             f"2. Offers validation and understanding\n"
             f"3. Smoothly incorporates relevant coping strategies if negative emotions were detected\n"
             f"4. Maintains a supportive, gentle tone throughout\n"
-            f"5. Keeps the response concise (around 3-4 paragraphs)\n"
+            f"5. Keeps the response concise (around 150 words, 2 paragraphs)\n"
             f"Your response should flow naturally as if written by a supportive friend or therapist."
         )
         

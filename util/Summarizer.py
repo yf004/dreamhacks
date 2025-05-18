@@ -18,7 +18,7 @@ class Summarizer:
             "3) Uses neutral, objective language "
             "4) Would help someone quickly recall this entry's content months later "
             "5) Avoids interpretations or advice\n\n"
-            "Keep the summary under 50 words. Format as a single paragraph with no additional text, "
+            "Keep the summary under 35 words. Format as a single paragraph with no additional text, "
             "no headers, no bullet points, and no formatting like bold or italics."
         )
 

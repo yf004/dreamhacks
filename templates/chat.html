@@ -43,11 +43,99 @@
                         </button>
                     </div>
                 </div>
-                
-                <button class="back-button">Back</button>
-            </div>
+                            </div>
         </div>
     </div>
-    <script src="../static/chat.js"></script>
+    <script>
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const messagesArea = document.getElementById('messagesArea');
+
+        messageInput.style.height = '3.75rem'; 
+
+        messageInput.addEventListener('input', function() {
+        this.style.height = '3.75rem'; 
+        if (this.scrollHeight > this.clientHeight) {
+            const newHeight = Math.min(this.scrollHeight, 120);
+            this.style.height = newHeight + 'px';
+        }
+        });
+
+        // Send message function
+        function sendMessage() {
+        const message = messageInput.value.trim();
+        if (message) {
+            // Create user message bubble
+            const userMessageBubble = document.createElement('div');
+            userMessageBubble.className = 'message-bubble user-message';
+            userMessageBubble.textContent = message;
+        
+            // Add to messages area
+            messagesArea.appendChild(userMessageBubble);
+        
+            // Clear input and reset height
+            messageInput.value = '';
+            messageInput.style.height = '3.75rem';
+        
+            // Add AI response (after a small delay to simulate thinking)
+            setTimeout(() => {
+            // Create AI message bubble
+            const aiMessageBubble = document.createElement('div');
+            aiMessageBubble.className = 'message-bubble ai-message';
+            aiMessageBubble.textContent = "[Insert AI response]";
+        
+            // Add to messages area
+            messagesArea.appendChild(aiMessageBubble);
+        
+            // Scroll messages to bottom
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+            }, 500);
+            
+            // Scroll messages to bottom after user message
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        }
+        }
+
+        // Send button click
+        sendButton.addEventListener('click', sendMessage);
+
+        // Enter key to send (Shift+Enter for new line)
+        messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+        });
+
+        // Back button functionality
+        document.querySelector('.back-button').addEventListener('click', function() {
+        // You can add navigation logic here
+        console.log('Back button clicked');
+        });
+
+        function setUpNavBar(curr){
+            document.getElementById('nav-home').onclick = function(){
+                if (curr!== 'home'){window.location.href = "/home";}
+            };
+            document.getElementById('nav-journal').onclick = function(){
+                if (curr!== 'journal'){window.location.href = "/journal";}
+            };
+            document.getElementById('nav-chat').onclick = function(){
+                if (curr!== 'chat'){window.location.href = "/chat";}
+            };
+        }
+
+        document.addEventListener("DOMContentLoaded", (event) => {
+            setUpNavBar('chat')
+            document.getElementById('logout').onclick = async function(){
+                window.location.href = "/logout";
+            }
+        });
+
+
+        async function get_ai_response(user_input){
+            
+        }
+    </script>
 </body>
 </html>

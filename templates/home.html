@@ -64,11 +64,11 @@
             <div class="emotion-container">
                 <h3>How are you feeling?</h3>
                 <div class="emotion-options">
-                    <div class="emotion sad">😭</div>
-                    <div class="emotion unhappy">😟</div>
-                    <div class="emotion neutral">😐</div>
-                    <div class="emotion happy">😊</div>
-                    <div class="emotion excited">😄</div>
+                    <div id='sad' class="emotion sad">😭</div>
+                    <div id='unhappy' class="emotion unhappy">😟</div>
+                    <div id='neutral' class="emotion neutral">😐</div>
+                    <div id='happy' class="emotion happy">😊</div>
+                    <div id='excited' class="emotion excited">😄</div>
                 </div>
             </div>
             <div class="chat-container">
@@ -125,7 +125,6 @@
                         const year = journalDate.getFullYear();
                         
                         // Redirect to journal page with date parameters
-                        window.location.href = `/display_journal?day=${day}&month=${month}&year=${year}`;
                     };
                     
                     // Add hover effects
@@ -153,25 +152,7 @@
         generateCalendar(currentMonth, currentYear);
         updateDayMonth();
         
-        // Set up emotion selection
-        emotionOptions.forEach(emotion => {
-            emotion.addEventListener('click', function() {
-                // Remove selected class from all emotions
-                emotionOptions.forEach(e => e.classList.remove('selected'));
-                
-                // Add selected class to clicked emotion
-                this.classList.add('selected');
-                
-                // Get the emotion type (sad, happy, etc)
-                selectedEmotion = this.classList[1]; // The second class is the emotion type
-                
-                // Update the current date's color in the calendar
-                updateCurrentDateColor(selectedEmotion);
-                
-                // You can also save this emotion to your database/backend here
-                // For example: saveEmotionToBackend(selectedEmotion);
-            });
-        });
+
         
         // Function to update the current date's color based on selected emotion
         function updateCurrentDateColor(emotionType) {
@@ -368,6 +349,58 @@
             if (curr!== 'chat'){window.location.href = "/chat";}
         };
     }
+
+    document.getElementById('sad').onclick = async function(){
+        let formData = new FormData();
+
+        const date = new Date();
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
+
+        formData.append('mood', 'sad');
+        formData.append('day', date.getDate().toString());
+        formData.append('month', monthNames[date.getMonth()]);
+            
+        fetch('/save_mood', {
+            method: 'POST',
+            body: formData
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    const emotions = ['sad', 'unhappy', 'neutral', 'happy', 'excited'];
+
+    emotions.forEach(emotion => {
+        document.getElementById(emotion).onclick = async function(){
+            let formData = new FormData();
+
+            const date = new Date();
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+
+
+            formData.append('mood', emotion);
+            formData.append('day', date.getDate().toString());
+            formData.append('month', monthNames[date.getMonth()]);
+                
+            fetch('/save_mood', {
+                method: 'POST',
+                body: formData
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+        
+    });
+
+
+
+    
+
     </script>
 </body>
 </html>

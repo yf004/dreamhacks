@@ -78,18 +78,15 @@ def auth_callback():
 
     return redirect(curr_url)
 
-
-
 @app.route('/get_prompt', methods=['POST'])  
 def get_prompt():
     prompt = get_journaling_prompt([])
     return jsonify({'prompt': prompt})
 
-
 @app.route('/signup', methods=['POST'])
 def signup():
     username = request.form.get('username')
-    password = request.form.get('password ')
+    password = request.form.get('password')
 
     username_ref = db.collection('usernames').document(username)
 
@@ -114,7 +111,6 @@ def signup():
         print(f"Error creating user: {e}")
         return jsonify({'error': str(e)}), 400
     
-
 @app.route('/signin', methods=['POST'])
 def signin():
     username = request.form.get('username')
@@ -138,7 +134,6 @@ def signin():
         return jsonify({'message': 'Login successful'}), 200
     else:
         return jsonify({'error': 'Invalid credentials'}), 401
-
 
 @app.route('/user_exists', methods=['POST'])
 def user_exists():
@@ -193,8 +188,41 @@ def get_data():
 @app.route('/get_ai_analysis', methods=['POST'])
 def get_ai_analysis():
     entry = request.form.get('entry')
-    response = get_response_to_journal(entry)
-    return jsonify({'response': response}), 200
+    day = request.form.get('day')
+    month = request.form.get('month')
+    
+    if 'email' in session:
+        username = session['email']
+    else:
+        username = session['username']
+
+    key = f"{day}-{month}"
+
+    # if exists, return
+    temp = retrieve_ai_response(username, day, month)
+    if (temp != ''): return jsonify({'response': temp}), 200
+    
+    # else, generate and save
+    ai_response = get_response_to_journal(entry)
+    doc_ref = db.collection('usernames').document(username)
+    doc = doc_ref.get()
+    if not doc.exists:
+        doc_ref.set({
+            'journal_entries': {
+                key: {
+                    'ai_response': ai_response
+                }
+            }
+        })
+    else:
+        doc_ref.set({
+            'journal_entries': {
+                key: {
+                    'ai_response': ai_response
+                }
+            }
+        }, merge=True)
+    return jsonify({'response': ai_response}), 200
 
 @app.route('/journal_entry', methods=['POST', 'GET'])  
 def journal_entry():
@@ -216,10 +244,11 @@ def journal_entry():
     print(username)
     print(day, month)
     entry = retrieve_entry(username, day, month)
-    print('entry', entry)
-    return render_template("journal_entry.html", entry = entry, day = day, month=month)
+    print('entry:', entry)
+    return render_template("journal_entry.html", entry=str(entry), day=day, month=month)
 
 def retrieve_entry(username, day, month):
+
     try:
         doc_ref = db.collection('usernames').document(username)
         doc = doc_ref.get()
@@ -237,6 +266,100 @@ def retrieve_entry(username, day, month):
         return '' 
     
     return ''  
+
+def retrieve_ai_response(username, day, month):
+    try:
+        doc_ref = db.collection('usernames').document(username)
+        doc = doc_ref.get()
+
+        
+
+        if doc.exists:
+            data = doc.to_dict()
+
+            # Create a unique key like '10-May' for lookup
+            entries = data.get('journal_entries', {})
+            key = f"{day}-{month}"
+            return entries.get(key, {}).get('ai_response', '')
+
+    except Exception as e:
+        print(f"Error retrieving entry: {e}")
+        return '' 
+    
+    return ''  
+
+from datetime import datetime
+
+def retrieve_latest_entries():
+    try:
+        if 'email' in session:
+            username = session['email']
+        elif 'username' in session:
+            username = session['username']
+        else:
+            return []
+        doc_ref = db.collection('usernames').document(username)
+        doc = doc_ref.get()
+
+        if doc.exists:
+            data = doc.to_dict()
+            entries = data.get('journal_entries', {})
+
+            # Convert keys like '10-May' into datetime objects for sorting
+            def parse_date(key):
+                try:
+                    return datetime.strptime(key, "%d-%B")  # e.g., "10-May"
+                except ValueError:
+                    return datetime.min  # Handle unexpected format safely
+
+            # Sort keys by date, newest first
+            sorted_keys = sorted(entries.keys(), key=parse_date, reverse=True)
+
+            latest_entries = []
+            for key in sorted_keys[:10]:  # Get up to 10 latest
+                entry = entries.get(key, {}).get('entry', '')
+                if entry:
+                    latest_entries.append(entry)
+
+            return latest_entries
+
+    except Exception as e:
+        print(f"Error retrieving latest entries: {e}")
+        return []
+
+    return []
+
+@app.route('/retrieve_mood', methods=['POST']) 
+def retrieve_mood():
+    try:
+        
+
+        if 'email' in session:
+            username = session['email']
+        elif 'username' in session:
+            username = session['username']
+        else:
+            return jsonify({'error': 'Not Logged In'}), 200
+        
+        doc_ref = db.collection('usernames').document(username)
+        doc = doc_ref.get()
+
+
+        day = request.form.get('day')
+        month = request.form.get('month')
+
+        if doc.exists:
+            data = doc.to_dict()
+
+            # Create a unique key like '10-May' for lookup
+            entries = data.get('journal_entries', {})
+            key = f"{day}-{month}"
+            mood = entries.get(key, {}).get('mood', '')
+            return jsonify({'mood': mood}), 200
+
+    except Exception as e:
+        print(f"Error retrieving entry: {e}")
+        return jsonify({'error': e}), 200
 
 @app.route('/save_entry', methods=['POST']) 
 def save_entry():
@@ -277,8 +400,45 @@ def save_entry():
 
     except Exception as e:
         print(f"Error saving entry: {e}")
-    return 'done'
+    return jsonify({'message': 'Entry saved successfully'}), 200
 
+@app.route('/save_mood', methods=['POST']) 
+def save_mood():
+    """Save a journal entry for a specific user, day, and month."""
+    try:
+        mood = request.form.get('mood')
+        day = request.form.get('day')
+        month = request.form.get('month')
+
+        if 'email' in session:
+            username = session['email']
+        else:
+            username = session['username']
+
+        key = f"{day}-{month}"
+
+        doc_ref = db.collection('usernames').document(username)
+        doc = doc_ref.get()
+        if not doc.exists:
+            doc_ref.set({
+                'journal_entries': {
+                    key: {
+                        'mood': mood,
+                    }
+                }
+            })
+        else:
+            doc_ref.set({
+                'journal_entries': {
+                    key: {
+                        'mood': mood,
+                    }
+                }
+            }, merge=True)
+
+    except Exception as e:
+        print(f"Error saving entry: {e}")
+    return jsonify({'message': 'Entry saved successfully'}), 200
 
 if __name__ == "__main__":
     app.run(use_reloader=True, debug=True) # for auto-reloading cos yay
