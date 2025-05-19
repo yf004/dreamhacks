@@ -10,6 +10,12 @@
   --transparent-white: rgba(255, 255, 255, 0.45);
   --transparent-dark-primary-color: rgba(84, 73, 71, 0.55);
   --transparent-primary-color: rgba(163, 129, 114, 0.25);
+
+   --emotion-sad: #fa9391;
+	--emotion-unhappy: #ffc1aa;
+	--emotion-neutral: #fbe693;
+	--emotion-happy: #ace190;
+	--emotion-excited: #64d69e;
 }
 
 body {
@@ -200,31 +206,40 @@ body {
 .date-number,
 .calendar-date {
 	width: clamp(45px, 4vw, 50px);
-	height: clamp(45px, 4vw, 50px);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: clamp(16px, 2vw, 20px);
-	color: rgba(78,68,57,1);
-	background-color: #f2f2f2;
-	border-radius: 5%;
+    height: clamp(45px, 4vw, 50px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(16px, 2vw, 20px);
+    color: rgba(78,68,57,1);
+    background-color: #f2f2f2;
+    border-radius: 5%;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Add transitions */
+    cursor: pointer;
 }
+
+.date-number.past-date {
+    cursor: pointer;
+}
+.date-number:not(.current-date):hover {
+    transform: scale(1.05);
+    background-color: rgba(191,126,92,0.3);
+}
+.date-number.other-month {
+    opacity: 0.4;
+    cursor: default;
+}
+
 
 .current-date,
-.calendar-date.today {
-	background-color: #f2f2f2;
-	color: rgba(78,68,57,1);
-	border: 2px solid rgba(78,68,57,1);
-	border-radius: 5%;
+.calendear.today {
+    background-color: #f2f2f2;
+    color: rgba(78,68,57,1);
+    border: 2px solid rgba(78,68,57,1);
+    border-radius: 5%;
+    transition: background-color 0.3s ease; /* Add smooth transition */
 }
 
-
-/* pretend this is a loop */
-.current-date.emotion-sad,.calendar-date.today.emotion-sad {background-color: #fa9391;}
-.current-date.emotion-unhappy, .calendar-date.today.emotion-unhappy { background-color: #ffc1aa; }
-.current-date.emotion-neutral, .calendar-date.today.emotion-neutral { background-color: #fbe693; }
-.current-date.emotion-happy,.calendar-date.today.emotion-happy {background-color: #ace190;}
-.current-date.emotion-excited,.calendar-date.today.emotion-excited {background-color: #64d69e;}
 
 .other-month,
 .calendar-date.other-month {
@@ -320,11 +335,11 @@ body {
 	transform: scale(1.1);
 }
 
-.emotion.sad { background-color: #fa9391; }
-.emotion.unhappy { background-color: #ffc1aa; }
-.emotion.neutral { background-color: #fbe693; }
-.emotion.happy { background-color: #ace190; }
-.emotion.excited { background-color: #64d69e; }
+.emotion.sad { background-color: var(--emotion-sad); }
+.emotion.unhappy { background-color: var(--emotion-unhappy); }
+.emotion.neutral { background-color: var(--emotion-neutral); }
+.emotion.happy { background-color: var(--emotion-happy); }
+.emotion.excited { background-color: var(--emotion-excited); }
 
 
 
