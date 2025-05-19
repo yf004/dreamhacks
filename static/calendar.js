@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     dateNumber.textContent = prevMonthDay;
 
                     let prevMonth = month - 1 < 0 ? 11 : month - 1;
-                    dateNumber.addEventListener('click', async function() {
+                    dateNumber.ondblclick = async function() {
                         let formData = new FormData();
                         formData.append('day', prevMonthDay);
                         formData.append('month', monthNames[prevMonth]);
@@ -68,12 +68,42 @@ document.addEventListener('DOMContentLoaded', function () {
                         fetch('/journal_entry', {
                             method: 'POST',
                             body: formData
+                        }).then(response => {
+                            window.location.href = `/journal_entry?day=${dateNumber.textContent}&month=${monthNames[month]}`;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                    }
+
+                    dateNumber.onclick = async function() {
+                        let formData = new FormData();
+                        formData.append('day', prevMonthDay);
+                        formData.append('month', monthNames[prevMonth]);
+                            
+                        fetch('/get_journal_entry', {
+                            method: 'POST',
+                            body: formData
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        }).then(data => {
+                            if (data.hasOwnProperty('entry')) {
+                                const entry = data.get('entry');
+                                document.getElementById('journal-entry').textContent = entry;
+                                document.getElementById('journal-entry').style.display = 'flex';
+
+                            } else {
+                                return;
+                            }
                         })
                         .catch(error => {
                             error.textContent = "error"; 
                             error.style.display = "block";
                         });
-                    });
+                    }
 
                 } else if (date <= daysInMonth) {
                     dateNumber.className = 'date-number';
@@ -87,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         dateNumber.classList.add('current-date');
                     }
 
-                    dateNumber.addEventListener('click', async function() {
+                    dateNumber.addEventListener.ondblclick = async function() {
                         let formData = new FormData();
                         formData.append('day', dateNumber.textContent);
                         formData.append('month', monthNames[month]);
@@ -96,13 +126,39 @@ document.addEventListener('DOMContentLoaded', function () {
                             method: 'POST',
                             body: formData
                         }).then(response => {
-                            // After successful fetch, redirect to the journal entry page with query parameters
                             window.location.href = `/journal_entry?day=${dateNumber.textContent}&month=${monthNames[month]}`;
                         })
                         .catch(error => {
                             console.log(error);
                         });
-                    });
+                    }
+                    dateNumber.onclick = async function() {
+                        let formData = new FormData();
+                        formData.append('day', dateNumber.textContent);
+                        formData.append('month', monthNames[month]);
+                            
+                        fetch('/get_journal_entry', {
+                            method: 'POST',
+                            body: formData
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        }).then(data => {
+                            if (data.hasOwnProperty('entry')) {
+                                const entry = data.get('entry');
+                                document.getElementById('journal-entry').textContent = entry;
+                                document.getElementById('journal-display').style.display = 'flex';
+
+                            } else {
+                                return;
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                    }
 
                     date++;
                 } else {
@@ -110,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     dateNumber.textContent = nextMonthDate;
 
                     let nextMonth = (month + 1) % 12;
-                    dateNumber.addEventListener('click', async function() {
+                    dateNumber.addEventListener.ondblclick = async function() {
                         let formData = new FormData();
                         formData.append('day', nextMonthDate);
                         formData.append('month', monthNames[nextMonth]);
@@ -118,10 +174,39 @@ document.addEventListener('DOMContentLoaded', function () {
                         fetch('/journal_entry', {
                             method: 'POST',
                             body: formData
+                        }).then(response => {
+                            window.location.href = `/journal_entry?day=${dateNumber.textContent}&month=${monthNames[month]}`;
                         }).catch(error => {
                             console.log(error);
                         });
-                    });
+                    }
+                    dateNumber.onclick = async function() {
+                        let formData = new FormData();
+                        formData.append('day', nextMonthDate);
+                        formData.append('month', monthNames[nextMonth]);
+                            
+                        fetch('/get_journal_entry', {
+                            method: 'POST',
+                            body: formData
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        }).then(data => {
+                            if (data.hasOwnProperty('entry')) {
+                                const entry = data.get('entry');
+                                document.getElementById('journal-entry').textContent = entry;
+                                document.getElementById('journal-display').style.display = 'flex';
+
+                            } else {
+                                return;
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                    }
 
                     nextMonthDate++;
                 }

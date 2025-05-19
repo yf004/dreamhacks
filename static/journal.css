@@ -259,3 +259,23 @@ body {
   background-color: var(--transparent-primary-color);
 }
 
+#journal-display{
+  background: var(--transparent-white);
+  border: 5px solid var(--primary-color);
+  width: 70vw;
+  height: 500px;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+  margin-bottom: 20px;
+  display: none;
+}
+
+
+#journal-entry{
+  font-weight: bold;
+	white-space: nowrap;        
+  overflow: hidden;          
+  text-overflow: ellipsis;  
+}

@@ -68,10 +68,5 @@ def get_response_to_journal(entry:str):
     print(response)
     return response
 
-def get_chatbot_response(message:str, mode:str, chatbot: TherapyChatbot):
-    response = chatbot.chat(message, mode)
-    return response
 
-def get_chatbot_summary(chatbot: TherapyChatbot):
-    return chatbot.summarize_session()
 

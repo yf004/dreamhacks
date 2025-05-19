@@ -13,6 +13,9 @@
 	--spacing-sm: 0.9375rem;
 	--spacing-md: 1.25rem;
 	--spacing-lg: 1.875rem;
+	--transparent-white: rgba(255, 255, 255, 0.45);
+	--transparent-dark-primary-color: rgba(84, 73, 71, 0.55);
+	--transparent-primary-color: rgba(163, 129, 114, 0.25);
 }
 
 * {
@@ -171,7 +174,7 @@ body {
 
 .new-chat-button {
 	background: var(--button-bg-color);
-	border: 2px solid var(--main-border-color);
+	border: 2px solid white;
 	padding: 0.5rem 1rem;
 	border-radius: var(--border-radius-small);
 	cursor: pointer;
@@ -460,4 +463,9 @@ body {
 		width: 2.8rem;
 		height: 2.8rem;
 	}
+}
+
+
+#nav-chat{
+  background-color: var(--transparent-primary-color);
 }

@@ -5,7 +5,7 @@ from openai import OpenAI  # Ensure correct import based on your actual client
 from config import DEEPSEEK_KEY  # Assuming your API key is stored here
 
 class TherapyChatbot:
-    def __init__(self, journal_inputs: List[str] = None):
+    def __init__(self, journal_inputs):
         """Initialize the chatbot with optional journal context."""
         self.conversation_history = []
         self.session_start_time = datetime.datetime.now()

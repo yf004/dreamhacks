@@ -29,15 +29,14 @@
                         <div class="chat-title">Chat Assistant</div>
                         <div class="chat-header-right">
                             <div class="mode-toggle">
-                                <span class="mode-label">Creative Mode</span>
+                                <span class="mode-label">Supportive Mode</span>
                                 <div class="toggle-switch" id="modeToggle">
                                     <div class="toggle-slider"></div>
                                 </div>
-                                <span class="mode-label">Analytical Mode</span>
+                                <span class="mode-label">Therapy Mode</span>
                             </div>
-                            <button class="new-chat-button" id="newChatButton">
-                                ✨ New Chat
-                            </button>
+                            <button class="new-chat-button" id="newChatButton">✨ New Chat</button>
+                            <button class="new-chat-button" id="saveButn">Save and Summarise</button>
                         </div>
                     </div>
                     
@@ -59,22 +58,20 @@
                         </button>
                     </div>
                 </div>
-                
-                <button class="back-button">Back</button>
             </div>
         </div>
     </div>
     
     <script>
-        const messageInput = document.getElementById('messageInput');
-        const sendButton = document.getElementById('sendButton');
-        const messagesArea = document.getElementById('messagesArea');
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+    const messagesArea = document.getElementById('messagesArea');
 
-        // Set initial height for the textarea
-        messageInput.style.height = '3.75rem'; // Initial size for one line
+    // Set initial height for the textarea
+    messageInput.style.height = '3.75rem'; // Initial size for one line
 
-        // Auto-resize textarea with maximum height limit
-        messageInput.addEventListener('input', function() {
+    // Auto-resize textarea with maximum height limit
+    messageInput.addEventListener('input', function() {
         // Reset height to auto first to get accurate scroll height
         this.style.height = '3.75rem'; // Start with single line height
         
@@ -86,98 +83,136 @@
             // Apply the new height in pixels for smoother transition
             this.style.height = newHeight + 'px';
         }
-        });
+    });
 
-        // Send message function
-        async function sendMessage() {
-            const message = messageInput.value.trim();
-            if (message) {
-                // Create user message bubble
-                const userMessageBubble = document.createElement('div');
-                userMessageBubble.className = 'message-bubble user-message';
-                userMessageBubble.textContent = message;
-            
-                // Add to messages area
-                messagesArea.appendChild(userMessageBubble);
-            
-                // Clear input and reset height
-                messageInput.value = '';
-                messageInput.style.height = '3.75rem';
-            
-                // Add AI response (after a small delay to simulate thinking)
-                setTimeout(() => {
+    const modes = ['talk', 'help'];
+    let currMode = 0;
+
+    // Send message function
+    async function sendMessage() {
+        const message = messageInput.value.trim();
+        if (message) {
+            // Create user message bubble
+            const userMessageBubble = document.createElement('div');
+            userMessageBubble.className = 'message-bubble user-message';
+            userMessageBubble.textContent = message;
+        
+            // Add to messages area
+            messagesArea.appendChild(userMessageBubble);
+        
+            // Clear input and reset height
+            messageInput.value = '';
+            messageInput.style.height = '3.75rem';
+        
+            // Add AI response (after a small delay to simulate thinking)
+            setTimeout(async () => { // Make the callback async
                 // Create AI message bubble
                 const aiMessageBubble = document.createElement('div');
                 aiMessageBubble.className = 'message-bubble ai-message';
-
-                get_ai_response(message, "talk")
-                aiMessageBubble.textContent = message;
-            
-                // Add to messages area
+                aiMessageBubble.textContent = '...';
                 messagesArea.appendChild(aiMessageBubble);
-            
+                
+                // Await the AI response
+                const aiResponse = await get_ai_response(message, modes[currMode]);
+                aiMessageBubble.textContent = aiResponse;
                 // Scroll messages to bottom
                 messagesArea.scrollTop = messagesArea.scrollHeight;
-                }, 500);
-                
-                // Scroll messages to bottom after user message
-                messagesArea.scrollTop = messagesArea.scrollHeight;
-            }
+            }, 500);
+            
+            // Scroll messages to bottom after user message
+            messagesArea.scrollTop = messagesArea.scrollHeight;
         }
+    }
 
-        // Send button click
-        sendButton.addEventListener('click', sendMessage);
+    // Send button click
+    sendButton.addEventListener('click', sendMessage);
 
-        // Enter key to send (Shift+Enter for new line)
-        messageInput.addEventListener('keypress', function(e) {
+    // Enter key to send (Shift+Enter for new line)
+    messageInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             sendMessage();
         }
-        });
+    });
 
-        // Back button functionality
-        document.querySelector('.back-button').addEventListener('click', function() {
-        // You can add navigation logic here
-        console.log('Back button clicked');
-        });
+    document.getElementById('modeToggle').addEventListener('click', function() {
+        this.classList.toggle('active');
+        currMode += 1;
+        currMode = currMode % 2;
+    });
 
-        //toggle button
-        document.getElementById('modeToggle').addEventListener('click', function() {
-                    this.classList.toggle('active');
-        });
-
-<<<<<<< HEAD
-
-        async function get_ai_response(user_input, mode){
-            let formData = new FormData();
-            formData.append('message', user_input);
-            formData.append('mode', mode);
-            fetch('/get_chatbot_response', {
+    async function get_ai_response(user_input, mode) {
+        let formData = new FormData();
+        formData.append('message', user_input);
+        formData.append('mode', mode);
+        
+        try {
+            const response = await fetch('/get_chatbot_response', {
                 method: 'POST',
                 body: formData
-            }).then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            }).then(data => {
-                if (data.hasOwnProperty('response')) {
-                    return data.response;
-                }
-            })
-            .catch(error => {
-                console.log(error);
             });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            if (data.hasOwnProperty('response')) {
+                return data.response; // Return the AI response
+            }
+        } catch (error) {
+            console.log(error);
         }
-=======
-         // New chat button functionality
-        document.getElementById('newChatButton').addEventListener('click', function() {
-            // Clear all messages
-            const messagesArea = document.getElementById('messagesArea');
-            messagesArea.innerHTML = '';
+    }
+
+    // New chat button functionality
+    document.getElementById('newChatButton').addEventListener('click', function() {
+        fetch('/new_chat', {
+            method: 'GET'
+        })
+        .catch(error => {
+            console.log(error);
         });
->>>>>>> 15da755f329161cb8f94271bc91508cb7e93136d
-    </script>
+    });
+
+    function setUpNavBar(curr) {
+        document.getElementById('nav-home').onclick = function() {
+            if (curr !== 'home') { window.location.href = "/home"; }
+        };
+        document.getElementById('nav-journal').onclick = function() {
+            if (curr !== 'journal') { window.location.href = "/journal"; }
+        };
+        document.getElementById('nav-chat').onclick = function() {
+            if (curr !== 'chat') { window.location.href = "/chat"; }
+        };
+    }
+
+    setUpNavBar('chat');
+
+    document.getElementById('saveButn').onclick = async function(){
+        const aiMessageBubble = document.createElement('div');
+        aiMessageBubble.className = 'message-bubble ai-message';
+        aiMessageBubble.textContent = '...';
+        fetch('/save_chat', {
+            method: 'GET'
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        }).then(data => {
+            if (data.hasOwnProperty('summary')) {
+                const summary = data.get('summary');
+                aiMessageBubble.textContent = summary;
+                messagesArea.appendChild(aiMessageBubble);
+
+            } else {
+                return;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+</script>
+
 </body>
 </html>
