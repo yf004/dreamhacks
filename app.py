@@ -276,20 +276,23 @@ def journal_entry():
     print('entry:', entry)
     return render_template("journal_entry.html", entry=str(entry), day=day, month=month)
 
-@app.route('/get_journal_entry', methods=['POST', 'GET'])  
+@app.route('/get_journal_entry', methods=['POST'])  
 def get_journal_entry():
     if 'email' in session:
         username = session['email']
-    else:
+    elif 'username' in session:
         username = session['username']
-
+    else:
+        return jsonify({'error': 'Not logged in'}), 401
 
     day = request.form.get('day')
     month = request.form.get('month')
 
     entry = retrieve_entry(username, day, month)
+    print(day, month)
     print('entry:', entry)
-    return jsonify({'entry': entry})
+    date = f"{day} {month}"
+    return jsonify({'entry': entry, "date": date})
 
 def retrieve_entry(username, day, month):
 

@@ -60,50 +60,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     dateNumber.textContent = prevMonthDay;
 
                     let prevMonth = month - 1 < 0 ? 11 : month - 1;
-                    dateNumber.ondblclick = async function() {
-                        let formData = new FormData();
-                        formData.append('day', prevMonthDay);
-                        formData.append('month', monthNames[prevMonth]);
-                            
-                        fetch('/journal_entry', {
-                            method: 'POST',
-                            body: formData
-                        }).then(response => {
-                            window.location.href = `/journal_entry?day=${dateNumber.textContent}&month=${monthNames[month]}`;
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                    }
+                    dateNumber.addEventListener('dblclick', async function() {
+                        await edit(dateNumber.textContent, monthNames[prevMonth]);
+                    });
 
-                    dateNumber.onclick = async function() {
-                        let formData = new FormData();
-                        formData.append('day', prevMonthDay);
-                        formData.append('month', monthNames[prevMonth]);
-                            
-                        fetch('/get_journal_entry', {
-                            method: 'POST',
-                            body: formData
-                        }).then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        }).then(data => {
-                            if (data.hasOwnProperty('entry')) {
-                                const entry = data.get('entry');
-                                document.getElementById('journal-entry').textContent = entry;
-                                document.getElementById('journal-entry').style.display = 'flex';
-
-                            } else {
-                                return;
-                            }
-                        })
-                        .catch(error => {
-                            error.textContent = "error"; 
-                            error.style.display = "block";
-                        });
-                    }
+                    dateNumber.addEventListener('click', async function() {
+                        await retrieve(dateNumber.textContent, monthNames[prevMonth]);
+                    });
 
                 } else if (date <= daysInMonth) {
                     dateNumber.className = 'date-number';
@@ -117,48 +80,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         dateNumber.classList.add('current-date');
                     }
 
-                    dateNumber.addEventListener.ondblclick = async function() {
-                        let formData = new FormData();
-                        formData.append('day', dateNumber.textContent);
-                        formData.append('month', monthNames[month]);
-                            
-                        fetch('/journal_entry', {
-                            method: 'POST',
-                            body: formData
-                        }).then(response => {
-                            window.location.href = `/journal_entry?day=${dateNumber.textContent}&month=${monthNames[month]}`;
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                    }
-                    dateNumber.onclick = async function() {
-                        let formData = new FormData();
-                        formData.append('day', dateNumber.textContent);
-                        formData.append('month', monthNames[month]);
-                            
-                        fetch('/get_journal_entry', {
-                            method: 'POST',
-                            body: formData
-                        }).then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        }).then(data => {
-                            if (data.hasOwnProperty('entry')) {
-                                const entry = data.get('entry');
-                                document.getElementById('journal-entry').textContent = entry;
-                                document.getElementById('journal-display').style.display = 'flex';
-
-                            } else {
-                                return;
-                            }
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                    }
+                    dateNumber.addEventListener('dblclick', async function() {
+                        await edit(dateNumber.textContent, monthNames[month]);
+                    });
+                    
+                    dateNumber.addEventListener('click', async function() {
+                        await retrieve(dateNumber.textContent, monthNames[month]);  
+                    });
 
                     date++;
                 } else {
@@ -166,47 +94,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     dateNumber.textContent = nextMonthDate;
 
                     let nextMonth = (month + 1) % 12;
-                    dateNumber.addEventListener.ondblclick = async function() {
-                        let formData = new FormData();
-                        formData.append('day', nextMonthDate);
-                        formData.append('month', monthNames[nextMonth]);
-                            
-                        fetch('/journal_entry', {
-                            method: 'POST',
-                            body: formData
-                        }).then(response => {
-                            window.location.href = `/journal_entry?day=${dateNumber.textContent}&month=${monthNames[month]}`;
-                        }).catch(error => {
-                            console.log(error);
-                        });
-                    }
-                    dateNumber.onclick = async function() {
-                        let formData = new FormData();
-                        formData.append('day', nextMonthDate);
-                        formData.append('month', monthNames[nextMonth]);
-                            
-                        fetch('/get_journal_entry', {
-                            method: 'POST',
-                            body: formData
-                        }).then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        }).then(data => {
-                            if (data.hasOwnProperty('entry')) {
-                                const entry = data.get('entry');
-                                document.getElementById('journal-entry').textContent = entry;
-                                document.getElementById('journal-display').style.display = 'flex';
-
-                            } else {
-                                return;
-                            }
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                    }
+                    dateNumber.addEventListener('dblclick', async function() {
+                        await edit(dateNumber.textContent, monthNames[nextMonth]);
+                    });
+                    
+                    dateNumber.addEventListener('click', async function() {
+                        await retrieve(dateNumber.textContent, monthNames[nextMonth]);
+                    });
 
                     nextMonthDate++;
                 }
@@ -252,4 +146,62 @@ document.addEventListener('DOMContentLoaded', function () {
         currentYear = now.getFullYear();
         generateCalendar(currentMonth, currentYear);
     }
+
+
+    async function edit(day, month){
+        let formData = new FormData();
+        formData.append('day', day);
+        formData.append('month', month);
+            
+        fetch('/journal_entry', {
+            method: 'POST',
+            body: formData
+        }).then(response => {
+            window.location.href = `/journal_entry?day=${date}&month=${monthNames[month]}`;
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
+    async function retrieve(day, month){
+        let formData = new FormData();
+        formData.append('day', day);
+        formData.append('month', month);
+            
+        fetch('/get_journal_entry', {
+            method: 'POST',
+            body: formData
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        }).then(async  data => {
+            if (data.hasOwnProperty('entry')) {
+                const entry = data.entry;
+                const date = data.date;
+                document.getElementById('journal-entry').textContent = entry;
+                document.getElementById('title').textContent = date;
+                document.getElementById('journal-display').style.display = 'flex';
+                if (entry === ''){
+                    ocument.getElementById('journal-display').style.display = 'none';
+                    await edit(day, month);
+                }
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
+
+    document.getElementById('edit').addEventListener('click', async function() {
+        const date = document.getElementById('title').toString();
+        const temp = date.split(" ");
+        const day = temp[0];
+        const month = temp[1];
+        await edit(day, month);
+    });
 });
+
