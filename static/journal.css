@@ -262,20 +262,43 @@ body {
 #journal-display{
   background: var(--transparent-white);
   border: 5px solid var(--primary-color);
-  width: 70vw;
-  height: 500px;
   padding: 10px 20px;
   display: flex;
   flex-direction: column;
   z-index: 20;
-  margin-bottom: 20px;
+  margin-bottom: 8vh; 
+  width: 25vw;
+  margin-right: 2vw;
+  margin-top: 8vh; 
+  gap: 4vh;
+  height: fit-content;
+  align-self: flex-start;
+  height: 85vh; 
   display: none;
 }
 
 
-#journal-entry{
+#journal-entry {
+    display: flex;          
+    overflow: hidden;              /* Hide overflow */
+    text-overflow: ellipsis;      /* Add ellipsis for overflowed text */
+    width: 100%;                  /* Full width */
+    line-height: 1.2em; 
+    text-align: start; 
+    height: 65vh;
+}
+
+#title{
   font-weight: bold;
-	white-space: nowrap;        
-  overflow: hidden;          
-  text-overflow: ellipsis;  
+}
+
+#edit{
+  font-family: 'Bungee', cursive;
+  padding: 10px 20px;
+  background-color: #A38172;
+  border-radius: 5px;
+  color: white;
+  align-self: flex-start;
+  width: fit-content;
+  font-size: 12px;
 }
