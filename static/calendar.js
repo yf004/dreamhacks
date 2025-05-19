@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             body: formData
         }).then(response => {
-            window.location.href = `/journal_entry?day=${date}&month=${monthNames[month]}`;
+            window.location.href = `/journal_entry?day=${day}&month=${month}`;
         })
         .catch(error => {
             console.log(error);
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 throw new Error('Network response was not ok');
             }
             return response.json();
-        }).then(async  data => {
+        }).then(async data => {
             if (data.hasOwnProperty('entry')) {
                 const entry = data.entry;
                 const date = data.date;
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('title').textContent = date;
                 document.getElementById('journal-display').style.display = 'flex';
                 if (entry === ''){
-                    ocument.getElementById('journal-display').style.display = 'none';
+                    document.getElementById('journal-display').style.display = 'none';
                     await edit(day, month);
                 }
             }
@@ -197,11 +197,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     document.getElementById('edit').addEventListener('click', async function() {
-        const date = document.getElementById('title').toString();
-        const temp = date.split(" ");
+        const dateText = document.getElementById('title').textContent;
+        const temp = dateText.split(" ");
         const day = temp[0];
         const month = temp[1];
         await edit(day, month);
     });
 });
-
