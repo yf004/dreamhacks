@@ -29,7 +29,6 @@
                         <div class="chat-title">Chat Assistant</div>
                         <div class="chat-header-right">
                             <div class="mode-toggle">
-<<<<<<< HEAD
                                 <span class="mode-label">Supportive Mode</span>
                                 <div class="toggle-switch" id="modeToggle">
                                     <div class="toggle-slider"></div>
@@ -38,7 +37,6 @@
                             </div>
                             <button class="new-chat-button" id="newChatButton">✨ New Chat</button>
                             <button class="new-chat-button" id="saveButn">Save and Summarise</button>
-=======
                                 <span class="mode-label">Talking Mode</span>
                                 <div class="toggle-switch" id="modeToggle">
                                     <div class="toggle-slider"></div>
@@ -46,7 +44,6 @@
                                 <span class="mode-label">Advice Mode</span>
                             </div>
                             <button class="new-chat-button" id="newChatButton"> New Chat</button>
->>>>>>> 12b4d51c93f75579b49df5f90068561fccd3fcab
                         </div>
                     </div>
                     
@@ -72,7 +69,7 @@
         </div>
     </div>
     
-    <script>
+<script>
     const messageInput = document.getElementById('messageInput');
     const sendButton = document.getElementById('sendButton');
     const messagesArea = document.getElementById('messagesArea');
@@ -95,16 +92,11 @@
         }
     });
 
-<<<<<<< HEAD
     const modes = ['talk', 'help'];
     let currMode = 0;
 
     // Send message function
     async function sendMessage() {
-=======
-        // Send message function
-        function sendMessage() {
->>>>>>> 12b4d51c93f75579b49df5f90068561fccd3fcab
         const message = messageInput.value.trim();
         if (message) {
             // Create user message bubble
@@ -120,40 +112,20 @@
             messageInput.style.height = '3.75rem';
         
             // Add AI response (after a small delay to simulate thinking)
-<<<<<<< HEAD
             setTimeout(async () => { // Make the callback async
                 // Create AI message bubble
                 const aiMessageBubble = document.createElement('div');
                 aiMessageBubble.className = 'message-bubble ai-message';
-                aiMessageBubble.textContent = '...';
+                aiMessageBubble.textContent = '...'; // Placeholder for loading
                 messagesArea.appendChild(aiMessageBubble);
                 
                 // Await the AI response
                 const aiResponse = await get_ai_response(message, modes[currMode]);
-                aiMessageBubble.textContent = aiResponse;
+                aiMessageBubble.textContent = aiResponse; // Set the AI response
+            
                 // Scroll messages to bottom
                 messagesArea.scrollTop = messagesArea.scrollHeight;
-=======
-            setTimeout(() => {
-            // Create AI message bubble
-            const aiMessageBubble = document.createElement('div');
-            aiMessageBubble.className = 'message-bubble ai-message';
-            aiMessageBubble.textContent = "[Insert AI response]";
-        
-            // Add to messages area
-            messagesArea.appendChild(aiMessageBubble);
-        
-            // Scroll messages to bottom
-            messagesArea.scrollTop = messagesArea.scrollHeight;
->>>>>>> 12b4d51c93f75579b49df5f90068561fccd3fcab
             }, 500);
-            
-            // Scroll messages to bottom after user message
-            messagesArea.scrollTop = messagesArea.scrollHeight;
-<<<<<<< HEAD
-=======
-        }
->>>>>>> 12b4d51c93f75579b49df5f90068561fccd3fcab
         }
     }
 
@@ -174,7 +146,6 @@
         currMode = currMode % 2;
     });
 
-<<<<<<< HEAD
     async function get_ai_response(user_input, mode) {
         let formData = new FormData();
         formData.append('message', user_input);
@@ -199,13 +170,32 @@
 
     // New chat button functionality
     document.getElementById('newChatButton').addEventListener('click', function() {
-        fetch('/new_chat', {
-            method: 'GET'
-        })
-        .catch(error => {
-            console.log(error);
-        });
+        // Clear all messages
+        messagesArea.innerHTML = '';
     });
+
+    document.getElementById('saveButn').onclick = async function() {
+        const aiMessageBubble = document.createElement('div');
+        aiMessageBubble.className = 'message-bubble ai-message';
+        aiMessageBubble.textContent = '...'; // Placeholder for loading
+        messagesArea.appendChild(aiMessageBubble); // Add loading bubble
+
+        try {
+            const response = await fetch('/save_chat', {
+                method: 'GET'
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            if (data.hasOwnProperty('summary')) {
+                const summary = data.summary; // Correctly access summary
+                aiMessageBubble.textContent = summary; // Set the summary
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     function setUpNavBar(curr) {
         document.getElementById('nav-home').onclick = function() {
@@ -220,47 +210,7 @@
     }
 
     setUpNavBar('chat');
-
-    document.getElementById('saveButn').onclick = async function(){
-        const aiMessageBubble = document.createElement('div');
-        aiMessageBubble.className = 'message-bubble ai-message';
-        aiMessageBubble.textContent = '...';
-        fetch('/save_chat', {
-            method: 'GET'
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        }).then(data => {
-            if (data.hasOwnProperty('summary')) {
-                const summary = data.get('summary');
-                aiMessageBubble.textContent = summary;
-                messagesArea.appendChild(aiMessageBubble);
-
-            } else {
-                return;
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        });
-    }
 </script>
 
-=======
-        //toggle button
-        document.getElementById('modeToggle').addEventListener('click', function() {
-                    this.classList.toggle('active');
-        });
-
-         // New chat button functionality
-        document.getElementById('newChatButton').addEventListener('click', function() {
-            // Clear all messages
-            const messagesArea = document.getElementById('messagesArea');
-            messagesArea.innerHTML = '';
-        });
-    </script>
->>>>>>> 12b4d51c93f75579b49df5f90068561fccd3fcab
 </body>
 </html>

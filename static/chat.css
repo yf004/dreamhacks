@@ -174,12 +174,9 @@ body {
 
 .new-chat-button {
 	background: var(--button-bg-color);
-<<<<<<< HEAD
 	border: 2px solid white;
 	padding: 0.5rem 1rem;
-=======
 	padding: 0.5rem 4rem;
->>>>>>> 12b4d51c93f75579b49df5f90068561fccd3fcab
 	border-radius: var(--border-radius-small);
 	border: 2px solid var(--main-border-color);
 	cursor: pointer;
