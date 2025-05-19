@@ -77,6 +77,8 @@
         </div>
     </div>
     <script>
+        // Updated JavaScript for Calendar Functionality
+
         document.addEventListener('DOMContentLoaded', function() {
         let currentDate = new Date();
         let currentMonth = currentDate.getMonth();
@@ -92,6 +94,15 @@
             "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
         ];
         
+        // Emotion color mapping - using CSS variables
+        const emotionColors = {
+            'sad': getComputedStyle(document.documentElement).getPropertyValue('--emotion-sad') || '#fa9391',
+            'unhappy': getComputedStyle(document.documentElement).getPropertyValue('--emotion-unhappy') || '#ffc1aa',
+            'neutral': getComputedStyle(document.documentElement).getPropertyValue('--emotion-neutral') || '#fbe693',
+            'happy': getComputedStyle(document.documentElement).getPropertyValue('--emotion-happy') || '#ace190',
+            'excited': getComputedStyle(document.documentElement).getPropertyValue('--emotion-excited') || '#64d69e'
+        };
+        
         // Elements
         const calendarBody = document.getElementById('calendar-body');
         const calendarTable = document.querySelector('.calendar');
@@ -101,6 +112,21 @@
         const currentMonthBtn = document.getElementById('current-month');
         const dayMonthElement = document.querySelector('.day-month');
         const emotionOptions = document.querySelectorAll('.emotion');
+        
+        // Function to generate a darkened version of emotion colors
+        function getDarkPastDayColor() {
+            // Define a set of dark colors that correspond to emotions but are darker
+            const darkEmotionColors = [
+                'rgba(250, 147, 145, 0.4)',  // dark sad (red)
+                'rgba(255, 193, 170, 0.4)',   // dark unhappy (orange)
+                'rgba(251, 230, 147, 0.4)',  // dark neutral (yellow)
+                'rgba(172, 225, 144, 0.4)',   // dark happy (green)
+                'rgba(100, 214, 158, 0.4)'    // dark excited (teal)
+            ];
+            
+            // Get a random dark color from our set
+            return darkEmotionColors[Math.floor(Math.random() * darkEmotionColors.length)];
+        }
         
         // Function to make calendar dates clickable
         function makeCalendarDatesClickable() {
@@ -124,21 +150,9 @@
                         const month = journalDate.toLocaleString('default', { month: 'long' });
                         const year = journalDate.getFullYear();
                         
-                        // Redirect to journal page with date parameters
+                        // You can implement the redirect to journal page with date parameters here
+                        console.log(`Clicked on ${month} ${day}, ${year}`);
                     };
-                    
-                    // Add hover effects
-                    dateElement.addEventListener('mouseenter', function() {
-                        if (!this.classList.contains('current-date')) {
-                            this.style.backgroundColor = 'rgba(191,126,92,0.3)';
-                        }
-                    });
-                    
-                    dateElement.addEventListener('mouseleave', function() {
-                        if (!this.classList.contains('current-date')) {
-                            this.style.backgroundColor = '#f2f2f2';
-                        }
-                    });
                 }
             });
         }
@@ -152,18 +166,65 @@
         generateCalendar(currentMonth, currentYear);
         updateDayMonth();
         
-
+        // Load saved mood from localStorage or database if available
+        loadSavedMood();
+        
+        // Function to load saved mood for current date (if any)
+        function loadSavedMood() {
+            // You could implement logic here to fetch saved mood from server
+            // For now, we'll just check if there's a saved mood in localStorage
+            const today = new Date();
+            const todayKey = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+            const savedMood = localStorage.getItem(`mood-${todayKey}`);
+            
+            if (savedMood && emotionColors[savedMood]) {
+                selectedEmotion = savedMood;
+                updateCurrentDateColor(savedMood);
+            }
+        }
+        
+        // Setup emotion selection with improved feedback
+        emotionOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const emotionType = this.id; // 'sad', 'happy', etc.
+                selectedEmotion = emotionType;
+                
+                // Update current date with selected emotion color
+                updateCurrentDateColor(emotionType);
+                
+                // Add visual feedback when clicked
+                this.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 300);
+                
+                // Save selected mood to localStorage (could also save to server)
+                const today = new Date();
+                const todayKey = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+                localStorage.setItem(`mood-${todayKey}`, emotionType);
+                
+                // Keep the existing AJAX call to save to server
+                let formData = new FormData();
+                formData.append('mood', emotionType);
+                formData.append('day', today.getDate().toString());
+                formData.append('month', monthNames[today.getMonth()]);
+                    
+                fetch('/save_mood', {
+                    method: 'POST',
+                    body: formData
+                }).catch(error => {
+                    console.log(error);
+                });
+            });
+        });
         
         // Function to update the current date's color based on selected emotion
         function updateCurrentDateColor(emotionType) {
             const currentDateElement = document.querySelector('.current-date');
             if (currentDateElement) {
-                // Remove all emotion-related classes
-                currentDateElement.classList.remove('emotion-sad', 'emotion-unhappy', 'emotion-neutral', 'emotion-happy', 'emotion-excited');
-                
-                // Add the selected emotion class
-                if (emotionType) {
-                    currentDateElement.classList.add(`emotion-${emotionType}`);
+                // Apply the emotion color directly
+                if (emotionType && emotionColors[emotionType]) {
+                    currentDateElement.style.backgroundColor = emotionColors[emotionType];
                 }
             }
         }
@@ -179,7 +240,7 @@
             dayMonthElement.innerHTML = `<b>${dayName}</b> ${monthName} ${dayNumber}`;
         }
         
-        // Function to generate the calendar
+        // Function to generate the calendar with transparent past day colors
         function generateCalendar(month, year) {
             // Clear previous calendar
             calendarBody.innerHTML = '';
@@ -204,13 +265,6 @@
                 const cellSize = rowsNeeded === 4 ? '50px' : '45px';
                 const spacing = rowsNeeded === 4 ? '15px 10px' : '12px 8px';
                 calendarTable.style.borderSpacing = spacing;
-                
-                // Update date number size
-                const dateNumbers = document.querySelectorAll('.date-number');
-                dateNumbers.forEach(num => {
-                    num.style.width = cellSize;
-                    num.style.height = cellSize;
-                });
             } else {
                 calendarTable.style.borderSpacing = '10px 5px';
             }
@@ -218,6 +272,12 @@
             // Create calendar cells
             let date = 1;
             let nextMonthDate = 1;
+            
+            // Current date for comparison
+            const today = new Date();
+            const currentDay = today.getDate();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
             
             // Create rows (typically 6 rows can fit all month variations)
             for (let i = 0; i < 6; i++) {
@@ -242,18 +302,31 @@
                         dateNumber.className = 'date-number';
                         dateNumber.textContent = date;
                         
+                        // Get the date we're currently rendering
+                        const cellDate = new Date(year, month, date);
+                        
                         // Highlight today's date
                         if (
-                            date === currentDate.getDate() && 
-                            month === currentDate.getMonth() && 
-                            year === currentDate.getFullYear()
+                            date === currentDay && 
+                            month === currentMonth && 
+                            year === currentYear
                         ) {
                             dateNumber.classList.add('current-date');
                             
                             // Apply emotion color if one is selected
-                            if (selectedEmotion) {
-                                dateNumber.classList.add(`emotion-${selectedEmotion}`);
+                            if (selectedEmotion && emotionColors[selectedEmotion]) {
+                                dateNumber.style.backgroundColor = emotionColors[selectedEmotion];
                             }
+                        } 
+                        // For past dates in the current month, assign dark emotion colors
+                        else if (cellDate < today && 
+                                !(year < currentYear || 
+                                (year === currentYear && month < currentMonth))) {
+                            // Only apply to dates in current month that are in the past
+                            dateNumber.classList.add('past-date');
+                            const darkColor = getDarkPastDayColor();
+                            dateNumber.style.backgroundColor = darkColor;
+                            dateNumber.dataset.darkColor = darkColor; // Store for hover effect
                         }
                         
                         cell.appendChild(dateNumber);
@@ -286,7 +359,7 @@
                 num.style.height = cellSize;
             });
             
-            // IMPORTANT: Make dates clickable after generating the calendar
+            // Make dates clickable after generating the calendar
             makeCalendarDatesClickable();
         }
         
@@ -317,8 +390,68 @@
         }
     });
 
-    document.addEventListener("DOMContentLoaded", (event) => {
-        fetch('/get_username')  // Replace with your API URL
+    // Setup unified emotion click handler
+    document.addEventListener("DOMContentLoaded", function() {
+        const emotions = ['sad', 'unhappy', 'neutral', 'happy', 'excited'];
+        
+        // Emotion color mapping - using CSS variables
+        const emotionColors = {
+            'sad': getComputedStyle(document.documentElement).getPropertyValue('--emotion-sad') || '#fa9391',
+            'unhappy': getComputedStyle(document.documentElement).getPropertyValue('--emotion-unhappy') || '#ffc1aa',
+            'neutral': getComputedStyle(document.documentElement).getPropertyValue('--emotion-neutral') || '#fbe693',
+            'happy': getComputedStyle(document.documentElement).getPropertyValue('--emotion-happy') || '#ace190',
+            'excited': getComputedStyle(document.documentElement).getPropertyValue('--emotion-excited') || '#64d69e'
+        };
+
+        emotions.forEach(emotion => {
+            const emotionElement = document.getElementById(emotion);
+            if (emotionElement) {
+                emotionElement.onclick = async function() {
+                    let formData = new FormData();
+
+                    const date = new Date();
+                    const monthNames = ["January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"
+                    ];
+
+                    // Update current date's background color immediately
+                    const currentDateElement = document.querySelector('.current-date');
+                    if (currentDateElement) {
+                        currentDateElement.style.backgroundColor = emotionColors[emotion];
+                    }
+
+                    // Visual feedback
+                    this.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 300);
+
+                    // Save to localStorage
+                    const todayKey = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+                    localStorage.setItem(`mood-${todayKey}`, emotion);
+
+                    // Prepare and send data to server
+                    formData.append('mood', emotion);
+                    formData.append('day', date.getDate().toString());
+                    formData.append('month', monthNames[date.getMonth()]);
+                        
+                    fetch('/save_mood', {
+                        method: 'POST',
+                        body: formData
+                    }).catch(error => {
+                        console.log(error);
+                    });
+                }
+            }
+        });
+
+        // Setup navigation event handlers
+        document.getElementById('logout')?.addEventListener('click', function() {
+            window.location.href = "/logout";
+        });
+
+        // Load username
+        fetch('/get_username')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.status);
@@ -326,81 +459,33 @@
             return response.json();
         })
         .then(data => {
-            document.getElementById('profile-name').textContent = data.name.toString();
+            const profileNameElement = document.getElementById('profile-name');
+            if (profileNameElement && data.name) {
+                profileNameElement.textContent = data.name.toString();
+            }
         })
         .catch(error => {
             console.log(error);
         });
-        setUpNavBar('home')
 
-        document.getElementById('logout').onclick = async function(){
-            window.location.href = "/logout";
-        }
+        // Setup navbar
+        setUpNavBar('home');
     });
 
-    function setUpNavBar(curr){
-        document.getElementById('nav-home').onclick = function(){
-            if (curr!== 'home'){window.location.href = "/home";}
-        };
-        document.getElementById('nav-journal').onclick = function(){
-            if (curr!== 'journal'){window.location.href = "/journal";}
-        };
-        document.getElementById('nav-chat').onclick = function(){
-            if (curr!== 'chat'){window.location.href = "/chat";}
-        };
-    }
-
-    document.getElementById('sad').onclick = async function(){
-        let formData = new FormData();
-
-        const date = new Date();
-        const monthNames = ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ];
-
-
-        formData.append('mood', 'sad');
-        formData.append('day', date.getDate().toString());
-        formData.append('month', monthNames[date.getMonth()]);
-            
-        fetch('/save_mood', {
-            method: 'POST',
-            body: formData
-        }).catch(error => {
-            console.log(error);
+    function setUpNavBar(curr) {
+        const pages = ['home', 'journal', 'chat'];
+        
+        pages.forEach(page => {
+            const element = document.getElementById(`nav-${page}`);
+            if (element) {
+                element.onclick = function() {
+                    if (curr !== page) {
+                        window.location.href = `/${page}`;
+                    }
+                };
+            }
         });
     }
-
-    const emotions = ['sad', 'unhappy', 'neutral', 'happy', 'excited'];
-
-    emotions.forEach(emotion => {
-        document.getElementById(emotion).onclick = async function(){
-            let formData = new FormData();
-
-            const date = new Date();
-            const monthNames = ["January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"
-            ];
-
-
-            formData.append('mood', emotion);
-            formData.append('day', date.getDate().toString());
-            formData.append('month', monthNames[date.getMonth()]);
-                
-            fetch('/save_mood', {
-                method: 'POST',
-                body: formData
-            }).catch(error => {
-                console.log(error);
-            });
-        }
-        
-    });
-
-
-
-    
-
     </script>
 </body>
 </html>
