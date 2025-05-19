@@ -29,6 +29,7 @@
                         <div class="chat-title">Chat Assistant</div>
                         <div class="chat-header-right">
                             <div class="mode-toggle">
+<<<<<<< HEAD
                                 <span class="mode-label">Supportive Mode</span>
                                 <div class="toggle-switch" id="modeToggle">
                                     <div class="toggle-slider"></div>
@@ -37,6 +38,15 @@
                             </div>
                             <button class="new-chat-button" id="newChatButton">✨ New Chat</button>
                             <button class="new-chat-button" id="saveButn">Save and Summarise</button>
+=======
+                                <span class="mode-label">Talking Mode</span>
+                                <div class="toggle-switch" id="modeToggle">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                                <span class="mode-label">Advice Mode</span>
+                            </div>
+                            <button class="new-chat-button" id="newChatButton"> New Chat</button>
+>>>>>>> 12b4d51c93f75579b49df5f90068561fccd3fcab
                         </div>
                     </div>
                     
@@ -85,11 +95,16 @@
         }
     });
 
+<<<<<<< HEAD
     const modes = ['talk', 'help'];
     let currMode = 0;
 
     // Send message function
     async function sendMessage() {
+=======
+        // Send message function
+        function sendMessage() {
+>>>>>>> 12b4d51c93f75579b49df5f90068561fccd3fcab
         const message = messageInput.value.trim();
         if (message) {
             // Create user message bubble
@@ -105,6 +120,7 @@
             messageInput.style.height = '3.75rem';
         
             // Add AI response (after a small delay to simulate thinking)
+<<<<<<< HEAD
             setTimeout(async () => { // Make the callback async
                 // Create AI message bubble
                 const aiMessageBubble = document.createElement('div');
@@ -117,10 +133,27 @@
                 aiMessageBubble.textContent = aiResponse;
                 // Scroll messages to bottom
                 messagesArea.scrollTop = messagesArea.scrollHeight;
+=======
+            setTimeout(() => {
+            // Create AI message bubble
+            const aiMessageBubble = document.createElement('div');
+            aiMessageBubble.className = 'message-bubble ai-message';
+            aiMessageBubble.textContent = "[Insert AI response]";
+        
+            // Add to messages area
+            messagesArea.appendChild(aiMessageBubble);
+        
+            // Scroll messages to bottom
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+>>>>>>> 12b4d51c93f75579b49df5f90068561fccd3fcab
             }, 500);
             
             // Scroll messages to bottom after user message
             messagesArea.scrollTop = messagesArea.scrollHeight;
+<<<<<<< HEAD
+=======
+        }
+>>>>>>> 12b4d51c93f75579b49df5f90068561fccd3fcab
         }
     }
 
@@ -141,6 +174,7 @@
         currMode = currMode % 2;
     });
 
+<<<<<<< HEAD
     async function get_ai_response(user_input, mode) {
         let formData = new FormData();
         formData.append('message', user_input);
@@ -214,5 +248,19 @@
     }
 </script>
 
+=======
+        //toggle button
+        document.getElementById('modeToggle').addEventListener('click', function() {
+                    this.classList.toggle('active');
+        });
+
+         // New chat button functionality
+        document.getElementById('newChatButton').addEventListener('click', function() {
+            // Clear all messages
+            const messagesArea = document.getElementById('messagesArea');
+            messagesArea.innerHTML = '';
+        });
+    </script>
+>>>>>>> 12b4d51c93f75579b49df5f90068561fccd3fcab
 </body>
 </html>
